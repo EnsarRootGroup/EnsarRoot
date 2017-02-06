@@ -6,14 +6,14 @@
 #include "tragall.C"
 
 void tragsim() {
-  
+
   // Input files
   TString EventFile = "evt_file.dat";
 
   // Output files
   TString OutFile = "tragsim.root";
   TString ParFile = "tragpar.root";
-  
+
   //-------------------------------------------------
   // Monte Carlo type     |    fMC        (TString)
   //-------------------------------------------------
@@ -21,7 +21,7 @@ void tragsim() {
   //   Geant4:                 "TGeant4"
   //   Fluka :                 "TFluka"
   TString fMC ="TGeant4";
-  
+
   //-------------------------------------------------
   // Primaries generation
   // Event Generator Type |   fGene       (TString)
@@ -29,8 +29,8 @@ void tragsim() {
   // Box  generator:             "box"
   // Ascii generator:          "ascii"
   // TraBox generator:         "tragbox"
-  TString fGene="tragbox";
-  
+  TString fGene="box";
+
   //-------------------------------------------------
   // Secondaries  generation (G4 only)
   // R3B Spec. PhysicList |     fUserPList (Bool_t)
@@ -38,8 +38,12 @@ void tragsim() {
   //     VMC Standard           kFALSE
   //     R3B Special            kTRUE;
   Bool_t fUserPList= kTRUE;
-  
-  
+
+  //-------------------------------------------------
+  // Activate the TimTrack task: Hit to Saeta
+  //-------------------------------------------------
+  Bool_t fHit2Saeta = kFALSE;
+
   //-------------------------------------------------
   //- Geometrical Setup Definition
   //-  Non Sensitiv        |    fDetName (String)
@@ -47,14 +51,14 @@ void tragsim() {
 
   TMap detGeo;
   detGeo.Add(new TObjString("RPC"),
-  	     new TObjString("tragaldabas_test.geo.root"));
+  	     new TObjString("tragaldabas_oficial.geo.root"));
 
 
    //-------------------------------------------------
    //- N# of Sim. Events   |    nEvents     (Int_t)
    //-------------------------------------------------
 
-   Int_t nEvents = 1;
+   Int_t nEvents = 1000000;
 
    //-------------------------------------------------
    //- EventDisplay        |    fEventDisplay (Bool_t)
@@ -64,8 +68,9 @@ void tragsim() {
    Bool_t fEventDisplay=kTRUE;
 
    // Main Sim function call
-   tragall(nEvents, &detGeo, fEventDisplay, fMC, fGene, fUserPList,
-	   OutFile, ParFile, EventFile);      
+   tragall(nEvents, &detGeo, fEventDisplay, fMC, fGene, fUserPList, fHit2Saeta,
+	   OutFile, ParFile, EventFile);
 
 }
+
 
