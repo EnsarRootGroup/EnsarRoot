@@ -37,5 +37,7 @@ target_link_libraries(caloUnpack ParBase Base R3Bbase R3BCaloCal dl ${Boost_LIBR
 
 add_executable(caloUnpackTest ${MAIN_SRCS})
 target_compile_options(caloUnpackTest PUBLIC 
-  "-DMAIN=FairRunOnline(FairLmdSource(R3BCaloUnpack),R3BCaloRawAna,R3BCaloCalibParFinder)" )
-target_link_libraries(caloUnpackTest ParBase Base R3Bbase R3BCaloCal dl boost_program_options)
+  "-DMAIN=FairRunOnline(FairLmdSource(R3BCaloUnpack),R3BCaloRawAna)" )
+# "-DMAIN=FairRunOnline(FairLmdSource(R3BCaloUnpack),R3BCaloRawAna,R3BCaloCalibParFinder)" )
+#target_link_libraries(caloUnpackTest ParBase Base R3Bbase R3BCaloCal dl boost_program_options)
+target_link_libraries(caloUnpackTest ParBase Base R3Bbase R3BCaloCal dl ${Boost_LIBRARIES})
