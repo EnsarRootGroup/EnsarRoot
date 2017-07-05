@@ -39,9 +39,9 @@ void runsim() {
   // Cascade generator:          "Cascade"
   // Co cascade generator:       "Cocascade"
   //TString fGene="box";
-  TString fGene="Sicascade";
+  //TString fGene="Sicascade";
   //TString fGene="Cascade";
-  //TString fGene="Cocascade";
+  TString fGene="Cocascade";
 
   //-------------------------------------------------
   // Secondaries  generation (G4 only)

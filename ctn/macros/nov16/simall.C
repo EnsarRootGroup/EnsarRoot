@@ -102,7 +102,7 @@ void simall(Int_t nEvents = 1,
   //HPGe Detector and chamber definition
   EnsarDetector* hpgedetector = new EnsarHPGeDet("EnsarHPGeDet",kTRUE);
   hpgedetector->SetGeometryFileName(((TObjString*)fDetList->GetValue("HPGE"))->GetString().Data());
-  //hpgedetector->SetVerboseLevel(0); //screen info
+  hpgedetector->SetVerboseLevel(1); //screen info
   run->AddModule(hpgedetector);
 
   // CALIFA definition
@@ -111,7 +111,7 @@ void simall(Int_t nEvents = 1,
   //Selecting the Non-uniformity of the crystals (1 means +-1% max deviation)
   ((R3BCalo *)calo)->SetNonUniformity(1.0);//change Resolution 5%, more realistic case
   calo->SetGeometryFileName(((TObjString*)fDetList->GetValue("CALIFA"))->GetString().Data());
-  //calo->SetVerboseLevel(0); //screen info
+  calo->SetVerboseLevel(1); //screen info
   run->AddModule(calo);
 
 
@@ -126,7 +126,7 @@ void simall(Int_t nEvents = 1,
   // 2- Define the BOX generator
   //Int_t pdgId          = 2212;         // geant particle id of the proton beam (exp Nov16)
   Int_t pdgId          = 22;         // geant particle id of the photon beam
-  Double32_t theta1    = 0.;          // polar angle distribution (degrees) (exp Nov16 theta=90)
+  Double32_t theta1    = 0.;          // polar angle distribution (degrees) 30-120
   Double32_t theta2    = 180.;
   Double32_t momentum  = 0.006068;     // GeV/c 6048keV energy of the beam
   FairBoxGenerator* boxGen = new FairBoxGenerator(pdgId,1); //multiplicity

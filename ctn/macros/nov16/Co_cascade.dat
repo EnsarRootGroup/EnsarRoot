@@ -9,11 +9,13 @@ Energy(GeV), Number of Levels
 Energy of the transitions (initial -->  final)
 0.002504	0.001332			
 Energy of gamma emmited in the transition
-0.01172       		        
+0.001172       		        
 Branching Ratios
 1
 Angular correlation coefficeints (A2 and A4)
-0.125	        0.0416
+0.	        0.
 
 //Only change the values
 //don't modify the file structure 
+
+0.125	        0.0416
