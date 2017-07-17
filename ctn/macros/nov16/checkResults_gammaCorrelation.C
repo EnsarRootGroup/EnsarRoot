@@ -7,40 +7,39 @@ void checkResults_gammaCorrelation() {
 	gStyle->SetOptStat(1);
 	gStyle->SetOptFit(0);
 
-	//INPUT FILE
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_W.root"; 
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_isotropic.root";  
+	//INPUT FILE 
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_W.root";  
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_isotropic.root";  
-	char inputFile[250] = "outsim.root";                                            
+	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_iso.root";  
+	//char inputFile[250] = "outsim.root"; 
+	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_W.root"; 
+	char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_iso.root";                                           
 	TFile *file1 = TFile::Open(inputFile);
 
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
 	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change this maximum energies
-	TH1F* h3   = new TH1F("h3","HPGe Total Energy",1000,0,3.);
+	TH1F* h3   = new TH1F("h3","HPGe Total Energy",1000,0,13.);
 	
-	TH1F* h1_Cal = new TH1F("h1_Cal","Petals Hit Total Energy",2000,0,3.); 
-	TH1F* h1_Cal_2 = new TH1F("h1_Cal_2","Petals Hit Energy with Ge Condition",2000,0,2.); 
-	TH1F* h2_Cal_1 = new TH1F("h2_Cal_1","Energy of Petal 90º",2000,0,2.);
-	TH1F* h2_Cal_2 = new TH1F("h2_Cal_2","Energy of Petal 180º",2000,0,2.);
+	TH1F* h1_Cal = new TH1F("h1_Cal","Petals Hit Total Energy",2000,0,15.); 
+	TH1F* h1_Cal_2 = new TH1F("h1_Cal_2","Petals Hit Energy with Ge Condition",2000,0,13.); 
+	TH1F* h2_Cal_1 = new TH1F("h2_Cal_1","Energy of Petals",2000,0,13.);
+	TH1F* h2_Cal_2 = new TH1F("h2_Cal_2","Energy of Petals",2000,0,13.);
 	TH1F* h3_Cal = new TH1F("h3_Cal","Hit Theta",2000,-3.2,3.2);
 	TH1F* h4_Cal = new TH1F("h4_Cal","Hit Phi",200,-3.6,3.6);
 	TH1F* h5_Cal = new TH1F("h5_Cal","Hits Multiplicity",10,0,10);
-	TH1F* h8_Cal_90 = new TH1F("h8_Cal_0","Energy of Petal around 90º",2000,0,2.);
-	TH1F* h8_Cal_180 = new TH1F("h8_Cal_180","Energy of Petal around 180º",2000,0,2.);
+	TH1F* h8_Cal_90 = new TH1F("h8_Cal_0","Energy of Petal around 90º",2000,0,13.);
+	TH1F* h8_Cal_180 = new TH1F("h8_Cal_180","Energy of Petal around 180º",2000,0,13.);
 	
-	TH2F* h6_Cal = new TH2F("h6_Cal","Theta vs Energy Petals", 2000,-3.2,3.2,2000,0,2.);
-	TH2F* h7_Cal = new TH2F("h7_Cal","Phi vs Energy Petals", 2000,-3.6,3.6,2000,0,2.);
-	TH2F* h9_Cal = new TH2F("h_9","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
-	
-	TH2F* h9_Cal_1 = new TH2F("h9_Cal_1","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
-	TH2F* h9_Cal_2 = new TH2F("h9_Cal_2","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
+	TH2F* h6_Cal = new TH2F("h6_Cal","Theta vs Energy Petals", 2000,-3.2,3.2,2000,0,13.);
+	TH2F* h7_Cal = new TH2F("h7_Cal","Phi vs Energy Petals", 2000,-3.6,3.6,2000,0,13.);
+	TH2F* h9_Cal = new TH2F("h_9_Cal","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
+	TH2F* h9_Cal_90 = new TH2F("h_9_Cal_90","Theta vs Phi (90)", 720,0.,3.6,720,-3.6,3.6);	
+	TH2F* h9_Cal_180 = new TH2F("h_9_Cal_180","Theta vs Phi (180)", 720,0.,3.6,720,-3.6,3.6);	
 	
 	TH1F* h_alpha_W = new TH1F("h_alpha_W","Reconstructed Angle between primary photons",200,0.,3.6);
 	TH1F* h_alpha_MC = new TH1F("h_alpha_MC","MCTrack Reconstructed Angle",200,0.,3.6);
-	TH2F* h_alpha_egy = new TH2F("h_alpha_egy","Alpha vs Energy", 2000,0.,3.6,2000,0,2.);
+	TH2F* h_alpha_egy = new TH2F("h_alpha_egy","Alpha vs Energy", 2000,0.,3.6,2000,0,12.);
 
 	//----   MCTrack (input)   -------------------------------------------------------
 	/*TClonesArray* MCTrackCA;
@@ -101,12 +100,12 @@ void checkResults_gammaCorrelation() {
     TVector3 momentum;
     
     //lower and upper limits Cascade Generator
-    //limit1=1.779 - 0.01*1.779;//-1% of gamma energy=1.779
-    //limit2=1.779 + 0.01*1.779;//+1%
+    limit1=1.779 - 0.01*1.779;//-1% of gamma energy=1.779
+    limit2=1.779 + 0.01*1.779;//+1%
     
     //lower and upper limits Co Cascade Generator
-    limit1=1.172 - 0.01*1.172;//-1% of gamma energy=1.172
-    limit2=1.172 + 0.01*1.172;//+1% 
+    //limit1=1.172 - 0.01*1.172;//-1% of gamma energy=1.172
+    //limit2=1.172 + 0.01*1.172;//+1% 
     
 
 	//TREE ENTRIES--------------------------------------------------------------------
@@ -118,8 +117,6 @@ void checkResults_gammaCorrelation() {
 	    	if(i%1== 100) printf("Event:%i\n",i);
 		energyGe = 0.;
 		tree->GetEvent(i);
-
-		cout<<"Event number "<<i<<endl;
 
 		//MCtracksPerEvent     = MCTrackCA->GetEntries();
 		hpgeHitsPerEvent     = hpgeHitCA->GetEntries();
@@ -223,26 +220,21 @@ void checkResults_gammaCorrelation() {
         
         
          
-        //LOOP in Crystal Hits----------------    
-         for(Int_t i=0;i<crystalHitsPerEvent;i++){
-         	cout<<"CrystalId= "<<crystalHit[i]->GetCrystalId()<<endl;
-         	cout<<"CrystalType= "<<crystalHit[i]->GetCrystalType()<<endl;
-         	cout<<"CrystalCopy= "<<crystalHit[i]->GetCrystalCopy()<<endl;
-         }
+        
         
          //LOOP in Calo Hits----------------    
          for(Int_t i=0;i<caloHitsPerEvent;i++){	
 			h1_Cal->Fill(caloHit[i]->GetEnergy()*1000); //MeV 
 			h9_Cal->Fill(caloHit[i]->GetTheta(),caloHit[i]->GetPhi());     
 			
-			Double_t Theta_out=0.;
-			Double_t Phi_out=0.;
+			//Double_t Theta_out=0.;
+			//Double_t Phi_out=0.;
 			
-			Theta_out= caloHit[i]->GetTheta();
-			Phi_out = caloHit[i]->GetPhi();
+			//Theta_out= caloHit[i]->GetTheta();
+			//Phi_out = caloHit[i]->GetPhi();
 			
-			cout<<"Phi_out= "<<Phi_out<<endl;
-			cout<<"Theta_out= "<<Theta_out<<endl;
+			//cout<<"Phi_out= "<<Phi_out<<endl;
+			//cout<<"Theta_out= "<<Theta_out<<endl;
 		}
 		
 		//LOOP in HPGe Hits----------------
@@ -287,28 +279,42 @@ void checkResults_gammaCorrelation() {
 					}
 					
 					if (Theta2<1.){
-						h2_Cal_1->Fill(caloHit[i]->GetEnergy()*1000); //Petal at 90º
-						if(crystalHit[i]->GetCrystalCopy()==1 || crystalHit[i]->GetCrystalCopy()==2 || crystalHit[i]->GetCrystalCopy()==7 || crystalHit[i]->GetCrystalCopy()==8){
-							h9_Cal_1->Fill(caloHit[i]->GetTheta(),caloHit[i]->GetPhi()); 
-						}
+						h2_Cal_1->Fill(caloHit[i]->GetEnergy()*1000); //Petal at 90º 
 					}else {
 						h2_Cal_2->Fill(caloHit[i]->GetEnergy()*1000); //Petal at 180º
-						if(crystalHit[i]->GetCrystalCopy()==1 || crystalHit[i]->GetCrystalCopy()==2 || crystalHit[i]->GetCrystalCopy()==7 || crystalHit[i]->GetCrystalCopy()==8){
-							h9_Cal_2->Fill(caloHit[i]->GetTheta(),caloHit[i]->GetPhi()); 
-						} 
 					}
 					
 					h6_Cal->Fill(Theta2,E2);
 					h7_Cal->Fill(Phi2,E2);
 					
-					if (Theta2<0.17){
-						h8_Cal_90->Fill(caloHit[i]->GetEnergy()*1000); //Petal at 90º
+					/*if (Theta2<0.15){  //Theta2<0.15 rad (0.3)
+						h8_Cal_90->Fill(caloHit[i]->GetEnergy()*1000); //Petal around 90º
 					}
+					if (Theta2>1.35 && Theta2<1.65){ //Theta2>1.35 && Theta2<1.65 rad (0.3)
+						h8_Cal_180->Fill(caloHit[i]->GetEnergy()*1000); //Petal around 180º
+					}*/
 					
-					if (Theta2>1.75 && Theta2<1.9){
-						h8_Cal_180->Fill(caloHit[i]->GetEnergy()*1000); //Petal at 180º
+					
+					//LOOP in Crystal Hits----------------    
+		     		for(Int_t j=0;j<crystalHitsPerEvent;j++){
+								 	//cout<<"CrystalId= "<<crystalHit[i]->GetCrystalId()<<endl;
+								 	//cout<<"CrystalType= "<<crystalHit[i]->GetCrystalType()<<endl;
+								 	//cout<<"CrystalCopy= "<<crystalHit[i]->GetCrystalCopy()<<endl;
+					 	Double_t CryID=0.;
+					 	CryID=crystalHit[j]->GetCrystalId();
+					 	
+					 	if (CryID>32 && CryID<41){
+					 			h8_Cal_90->Fill(caloHit[i]->GetEnergy()*1000); //Petal around 90º
+					 			h9_Cal_90->Fill(caloHit[i]->GetTheta(),caloHit[i]->GetPhi());
+		     			}
+		     			if (CryID==98|| CryID==97|| CryID==90|| CryID==89|| CryID==95|| CryID==96|| CryID==103|| CryID==104){
+					 			h8_Cal_180->Fill(caloHit[i]->GetEnergy()*1000); //Petal around 180º
+					 			h9_Cal_180->Fill(caloHit[i]->GetTheta(),caloHit[i]->GetPhi());
+		     			}
+					
+					
+					
 					}
-				}
 				
 			
 			Double_t alpha=0.; //angle between two primary gammas	Prod Escalar
@@ -330,14 +336,14 @@ void checkResults_gammaCorrelation() {
 			
 				//cout<<"Gamma1= "<<px1<<", "<<py1<<", "<<pz1<<endl;
 				//cout<<"Gamma2= "<<px2<<", "<<py2<<", "<<pz2<<endl;
-				//cout<<"Alpha= "<<alpha<<endl;
-				
-				
+				//cout<<"Alpha= "<<alpha<<endl;	
 			}
 				
 			for(Int_t i=0;i<caloHitsPerEvent;i++){
 				h_alpha_egy->Fill(alpha,caloHit[i]->GetEnergy()*1000);
 			}
+			
+         }
 	 	}
 		
 
@@ -355,7 +361,7 @@ void checkResults_gammaCorrelation() {
 	
 	//Save Histograms in a file
 	
-	TFile* Histos_Co=new TFile("Histos_Co.root","recreate");
+	TFile* Histos_Co=new TFile("Histos_Co_W.root","recreate");
 	h3->Write();
 	h1_Cal->Write();
 	h1_Cal_2->Write();
@@ -370,6 +376,8 @@ void checkResults_gammaCorrelation() {
 	h8_Cal_90->Write();
 	h8_Cal_180->Write();
 	h9_Cal->Write();
+	h9_Cal_90->Write();
+	h9_Cal_180->Write();
 	Histos_Co->Close();
 
 	// HISTOGRAMS--------------------------------------------------------------------- 
@@ -382,7 +390,7 @@ void checkResults_gammaCorrelation() {
    	ci = TColor::GetColor("#000099");
    	h3->SetLineColor(ci);
    	h3->SetLineWidth(2);
-   	h3->GetXaxis()->SetTitle("Energy (MeV/c^{2})");
+   	h3->GetXaxis()->SetTitle("Energy (MeV)");
    	h3->GetXaxis()->SetLabelSize(0.035);
    	h3->GetXaxis()->SetTitleSize(0.035);
    	h3->GetYaxis()->SetTitle("Counts");
@@ -413,7 +421,7 @@ void checkResults_gammaCorrelation() {
 	h4_Cal->GetXaxis()->SetTitle("Phi (rad)");
 	h4_Cal->GetYaxis()->SetTitle("Counts");
 	
-	c13->cd(3);       
+	/*c13->cd(3);       
 	h_alpha_W->Draw();
 	h_alpha_W->SetLineColor(4);
 	h_alpha_W->GetXaxis()->SetTitle("Detectors Alpha angle (rad)");
@@ -423,7 +431,7 @@ void checkResults_gammaCorrelation() {
 	h_alpha_egy->Draw("colz");
 	h_alpha_egy->SetLineColor(4);
 	h_alpha_egy->GetXaxis()->SetTitle("Detectors Alpha angle (rad)");
-	h_alpha_egy->GetYaxis()->SetTitle("Energy (MeV)");
+	h_alpha_egy->GetYaxis()->SetTitle("Energy (MeV)");*/
 	
 	/*c13->cd(4); 
 	h_alpha_MC->Draw();
@@ -452,13 +460,21 @@ void checkResults_gammaCorrelation() {
 	
 	
 	
-	TCanvas* c15 = new TCanvas("Hits Multiplicity","Hits Multiplicity",0,0,400,800);          
+	/*TCanvas* c15 = new TCanvas("Hits Multiplicity","Hits Multiplicity",0,0,400,800);          
 	c15->SetFillColor(0);       
 	c15->SetFrameFillColor(0);           
 	h5_Cal->Draw();
 	h5_Cal->SetLineColor(7);
 	h5_Cal->GetXaxis()->SetTitle("Hits Multiplicity");
-	h5_Cal->GetYaxis()->SetTitle("Counts");
+	h5_Cal->GetYaxis()->SetTitle("Counts");*/
+	
+	TCanvas* c15 = new TCanvas("Recontructed Angle","Recontructed Angle",0,0,400,800);          
+	c15->SetFillColor(0);       
+	c15->SetFrameFillColor(0);           
+	h_alpha_W->Draw();
+	h_alpha_W->SetLineColor(7);
+	h_alpha_W->GetXaxis()->SetTitle("Recontructed Angle (rad)");
+	h_alpha_W->GetYaxis()->SetTitle("Counts");
 	
 	
 	
@@ -496,32 +512,49 @@ void checkResults_gammaCorrelation() {
 	c17->SetFrameFillColor(0);  
 	c17->Divide(2,2);
 	
-	/*c17->cd(1);
+	c17->cd(1);
 	h8_Cal_90->Draw(); 
 	h8_Cal_90->SetLineColor(7);
-	h8_Cal_90->GetXaxis()->SetTitle("Energy Petal around 90 (MeV)");
+	h8_Cal_90->GetXaxis()->SetTitle("Energy Petal around 90 windows (MeV)");
 	h8_Cal_90->GetYaxis()->SetTitle("Counts");
 	
 	c17->cd(2);
 	h8_Cal_180->Draw(); 
 	h8_Cal_180->SetLineColor(8);
-	h8_Cal_180->GetXaxis()->SetTitle("Energy Petal around 180 (MeV)");
-	h8_Cal_180->GetYaxis()->SetTitle("Counts");*/
-	
-	c17->cd(1);
-	h9_Cal_1->Draw("colz"); 
-	h9_Cal_1->GetXaxis()->SetTitle("Theta (rad)");
-	h9_Cal_1->GetYaxis()->SetTitle("Phi (rad)");
-	
-	c17->cd(1);
-	h9_Cal_2->Draw("colz"); 
-	h9_Cal_2->GetXaxis()->SetTitle("Theta (rad)");
-	h9_Cal_2->GetYaxis()->SetTitle("Phi (rad)");
+	h8_Cal_180->GetXaxis()->SetTitle("Energy Petal around 180 windows (MeV)");
+	h8_Cal_180->GetYaxis()->SetTitle("Counts");
 	
 	c17->cd(3);
+	h9_Cal_90->Draw("colz"); 
+	h9_Cal_90->GetXaxis()->SetTitle("Theta (rad)");
+	h9_Cal_90->GetYaxis()->SetTitle("Phi (rad)");
+	
+	c17->cd(4);
+	h9_Cal_180->Draw("colz"); 
+	h9_Cal_180->GetXaxis()->SetTitle("Theta (rad)");
+	h9_Cal_180->GetYaxis()->SetTitle("Phi (rad)");
+	
+	
+	
+	TCanvas* c18 = new TCanvas("Theta vs Phi","Theta vs Phi",0,0,400,800);          
+	c18->SetFillColor(0);       
+	c18->SetFrameFillColor(0);           
 	h9_Cal->Draw("colz"); 
 	h9_Cal->GetXaxis()->SetTitle("Theta (rad)");
 	h9_Cal->GetYaxis()->SetTitle("Phi (rad)");
+	
+	
+	TCanvas* c19 = new TCanvas("Energy of both Petals","Energy of both Petals",0,0,400,800);          
+	c16->SetFillColor(0);       
+	c16->SetFrameFillColor(0);  
+	h2_Cal_1->Draw(); 
+	h2_Cal_1->SetLineColor(2);
+	h2_Cal_1->GetXaxis()->SetTitle("Energy Petals (MeV)");
+	h2_Cal_1->GetYaxis()->SetTitle("Counts");
+	h2_Cal_2->Draw("same"); 
+	h2_Cal_2->SetLineColor(8);
+	
+
 
 }
 

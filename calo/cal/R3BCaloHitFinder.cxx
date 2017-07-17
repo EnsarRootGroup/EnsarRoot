@@ -239,8 +239,8 @@ void R3BCaloHitFinder::Exec(Option_t* opt)
 		&polarAngle,&azimuthalAngle,&rhoAngle);
     }
     
-	cout<<"azimutalAngle= "<<azimuthalAngle<<endl;  //MOD ELI
-	cout<<"polarAngle= "<<polarAngle<<endl;
+	//cout<<"azimutalAngle= "<<azimuthalAngle<<endl;
+	//cout<<"polarAngle= "<<polarAngle<<endl;
 
     // Third, finding closest hits and adding their energy
     // Clusterization: you want to put a condition on the angle between the highest
@@ -298,8 +298,8 @@ void R3BCaloHitFinder::Exec(Option_t* opt)
             angle1 = azimuthalAngle; angle2 = testAzimuthal;
           }
           
-          cout<<"Azimutal_angle1= "<<angle1<<endl;   //MOD ELI
-          cout<<"Azimutal_angle2= "<<angle2<<endl;
+          //cout<<"Azimutal_angle1= "<<angle1<<endl;
+          //cout<<"Azimutal_angle2= "<<angle2<<endl;
           
           if (TMath::Abs(polarAngle - testPolar) < fDeltaPolar &&
               TMath::Abs(angle1 - angle2) < fDeltaAzimuthal ) {
@@ -1773,13 +1773,13 @@ void R3BCaloHitFinder::GetAngles(Int_t iD, Double_t* polar,
      	alveolusCopy=17;		//alveolus type 17
      }
      
-     cout<<"CrystalId= "<<iD<<endl;
-     cout<<"iD2= "<<iD2<<endl;
-     cout<<"cpPetal= "<<cpPetal<<endl;
-     cout<<"crystalType= "<<crystalType<<endl;
-     cout<<"crystalCopy= "<<crystalCopy<<endl;
-     cout<<"crystalInAlveolus= "<<crystalInAlveolus<<endl;
-     cout<<"alveolusCopy= "<<alveolusCopy<<endl;
+     //cout<<"CrystalId= "<<iD<<endl;
+     //cout<<"iD2= "<<iD2<<endl;
+     //cout<<"cpPetal= "<<cpPetal<<endl;
+     //cout<<"crystalType= "<<crystalType<<endl;
+     //cout<<"crystalCopy= "<<crystalCopy<<endl;
+     //cout<<"crystalInAlveolus= "<<crystalInAlveolus<<endl;
+     //cout<<"alveolusCopy= "<<alveolusCopy<<endl;
      
      
     Int_t alveoliType[16]={1,2,2,2,2,3,3,4,4,4,5,5,5,6,6,6};
