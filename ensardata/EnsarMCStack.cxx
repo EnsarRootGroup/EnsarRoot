@@ -368,7 +368,7 @@ void EnsarMCStack::Reset() {
 
 // -----   Public method Register   ----------------------------------------
 void EnsarMCStack::Register() {
- // FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks,kTRUE);
+  FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks,kTRUE);
 }
 // -------------------------------------------------------------------------
 

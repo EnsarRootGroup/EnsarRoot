@@ -129,7 +129,7 @@ Bool_t EnsarCascadeGen::ReadEvent(FairPrimaryGenerator* primGen)
 		//Angles in the RS of Lab(1) and RS of first gamma emmited(2) 
 		/*RS Lab*/ 
 		phi1 = 6.283185307  *gRandom->Rndm();//0-2*pi 
-		//theta1    = TMath::ACos(1-2*gRandom->Rndm());//0-pi
+		theta1    = TMath::ACos(1-2*gRandom->Rndm());//0-pi
 		phi1_ch = phi1 + TMath::Pi()/2.; //add pi/2 for the change of RS gamma to LabRS
 	
 		/*RS gamma*/
@@ -218,7 +218,7 @@ Bool_t EnsarCascadeGen::ReadEvent(FairPrimaryGenerator* primGen)
 		Double_t Z=0.;
 	  	  
 	  	//adding the gammas of Si* cascade
-		//primGen->AddTrack(fPDGType, px1, py1, pz1, X, Y, Z);
+		primGen->AddTrack(fPDGType, px1, py1, pz1, X, Y, Z);
 		primGen->AddTrack(fPDGType, px2, py2, pz2, X, Y, Z);
 				
 		//TVector3 mom;
