@@ -1,0 +1,20 @@
+///////////////////////////////////////////////////////
+////                                               ////
+////  Cascade of Gammas with Angular Correlation   ////
+////         400keV->200keV->0                     ////
+////                                               ////
+///////////////////////////////////////////////////////
+Energy(GeV), Number of Levels
+0.0004     1                         
+Energy of the transitions (initial -->  final)
+0.0004	0.0002			
+Energy of gamma emmited in the transition
+0.0002       		        
+Branching Ratios
+1
+Angular correlation coefficeints (A2 and A4)
+0.95	        0.95
+
+//Only change the values
+//don't modify the file structure 
+

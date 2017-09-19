@@ -100,10 +100,10 @@ void simall(Int_t nEvents = 1,
   run->AddModule(cave);
 
   //HPGe Detector and chamber definition
-  /*EnsarDetector* hpgedetector = new EnsarHPGeDet("EnsarHPGeDet",kTRUE);
+  EnsarDetector* hpgedetector = new EnsarHPGeDet("EnsarHPGeDet",kTRUE);
   hpgedetector->SetGeometryFileName(((TObjString*)fDetList->GetValue("HPGE"))->GetString().Data());
   hpgedetector->SetVerboseLevel(0); //screen info
-  run->AddModule(hpgedetector);*/
+  run->AddModule(hpgedetector);
 
   // CALIFA definition
   EnsarDetector* calo = new R3BCalo("Califa", kTRUE);
@@ -132,8 +132,9 @@ void simall(Int_t nEvents = 1,
   FairBoxGenerator* boxGen = new FairBoxGenerator(pdgId,1); //multiplicity
   boxGen->SetThetaRange (theta1,theta2);
   boxGen->SetCosTheta();
-  boxGen->SetPRange     (0.0002,0.0002);   // momentum of the beam GeV/c
+  boxGen->SetPRange     (0.001,0.001);   // momentum of the beam GeV/c
   boxGen->SetPhiRange   (0.0,360.0); // angle (exp Nov16 phi=180)
+  //boxGen->SetXYZ        (0.5,0.,0.);   // origin of the beam moved (exp Nov16)
   boxGen->SetXYZ        (0.,0.,0.);  // origin of the beam in the center
   
   // add the box generator
@@ -175,7 +176,7 @@ void simall(Int_t nEvents = 1,
   
 
 // ----- Initialize CaloHitFinder task ------------------------------------
- /* Bool_t fCaloHitFinder = true;
+  Bool_t fCaloHitFinder = true;
   if(fCaloHitFinder) {
     R3BCaloHitFinder* caloHF = new R3BCaloHitFinder();
     caloHF->SetClusteringAlgorithm(1,0);    //square window
@@ -185,7 +186,7 @@ void simall(Int_t nEvents = 1,
     caloHF->SelectGeometryVersion(1116);
     caloHF->SetAngularWindow(3.2,3.2);      //[0.25 around 14.3 degrees, 3.2 for the complete calorimeter]
     run->AddTask(caloHF);
-  }  */
+  }  
  
  
  
