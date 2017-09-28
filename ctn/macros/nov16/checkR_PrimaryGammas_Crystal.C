@@ -1,4 +1,36 @@
-void checkResults_ResolutionCry_angulos() {
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////		Macro to checkResults in MCTrack & Petals					////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l checkR_PrimaryGammas_Crystal.C				////
+////																	////
+////		Calculate: 													////
+////			-MCTrack: angles theta&phi of each crystal				////
+////			-Crystal: Primary Gammas Hits in each Crystal			////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
+
+//NOTE1: if you want to analyze the CrystalPoint
+//      you have to activate it before to execute runsim.C,
+//		in order to create its branch
+//
+//		How to activate it: comment/descomment these lines
+//		Califa: calo/cal/R3BCalo.cxx
+//				->FairRootManager::Instance()->Register("CrystalPoint", GetName(), fCaloCollection, kTRUE);
+//		Then, you have to do "make" again in the EnsarRoot build directory and execute runsim.C  
+
+//NOTE2: it is better to use a low energy gamma simulation (100-200 keV)
+//		 because the gamma arrives and stops at the same crystal 
+
+
+void checkR_PrimaryGammas_Crystal() {
 
 	//ROOT ENVIRONMENT
 	gROOT->SetStyle("Plain");
@@ -6,7 +38,7 @@ void checkResults_ResolutionCry_angulos() {
 	gStyle->SetOptFit(0);
 
 	//INPUT FILE  
-	char inputFile[250] = "outsim.root";                                            
+	char inputFile[250] = "outsim.root"; //select root file                                           
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_gamma_200kev.root"; 
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_g_200keV_W.root";	
 	TFile *file1 = TFile::Open(inputFile);
@@ -14,7 +46,7 @@ void checkResults_ResolutionCry_angulos() {
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION-----------------------------------------------------------
+	//HISTOGRAMS DEFINITION--------------------------------------------------------------------//Change these ranges
 	TH1F* h_Cry_1 = new TH1F("h_Cry_1","Primary Gammas Hits of each Crystal",130.,0.,130.);	
 	
 	//TH2F* h_Calo_2 = new TH2F("h_Calo_2","Theta of each Crystal", 128.,0.,128.,360,0.,3.6);
@@ -48,7 +80,7 @@ void checkResults_ResolutionCry_angulos() {
 	branchCaloHit->SetAddress(&caloHitCA);*/
 	
 	
-	//Calo Points
+	//Crystal Points
 	/*TClonesArray* crystalPointCA;  
 	R3BCaloPoint** crystalPoint;
 	crystalPointCA = new TClonesArray("R3BCaloPoint",5);

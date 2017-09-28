@@ -1,5 +1,21 @@
-void eficiency() {
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////		Macro to calculate the photopeak efficiency					////
+////				of the HPGe detector								////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l eficiency_HPGe.C							////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
 
+
+void eficiency_HPGe() {
 
 	//ROOT ENVIRONMENT
 	gROOT->SetStyle("Plain");
@@ -37,7 +53,7 @@ void eficiency() {
 		//READING TREE---------------------------------------------------------------------
 		TTree* tree = (TTree*)file2->Get("ensartree");
 
-		//Crystal Points (input)------------------------------------------------------------
+		//HPGe Hits (input)------------------------------------------------------------
 		TClonesArray* hpgeHitCA;
 		EnsarHPGeDetHit** hpgeHit;
 		hpgeHitCA = new TClonesArray("EnsarHPGeDetHit",5);
@@ -79,7 +95,7 @@ void eficiency() {
 
 					energy = hpgeHit[j]->GetEnergy()*1000; //energy MeV
 					h[k]->Fill(energy); 
-					//cout<<"El valor de la energia es de: "<< energy <<endl;		
+					//cout<<"The energy is "<< energy <<endl;		
 				}
 			}
 			if(hpgeHitsPerEvent) delete[] hpgeHit;	 
@@ -92,17 +108,17 @@ void eficiency() {
 			TSpectrum* spec= new TSpectrum(); 
 			nfound = spec-> Search(h[k],5.9,"",0.8);
 			//nfound = spec-> Search(h[k],2,"",0.05); by default
-			printf("Found %d candidate peaks to fit\n",nfound);// numero de picos totales que encuentra en cada espectro
+			printf("Found %d candidate peaks to fit\n",nfound);// number of peaks have been found in spectrum 
 
 
 			//Get position on x axis for each peak
-			Double_t *xpeaks = spec->GetPositionX(); // nos devuelve un array con la posicion de cada pico, si solo tiene un pico Dim=1, si tiene 3 Dim=3
+			Double_t *xpeaks = spec->GetPositionX(); // returns an array with each peak position, one peak Dim=1, 3 peaks Dim=3
 			if(nfound==1) {
-				xp = xpeaks[0];//solo existe un pico
+				xp = xpeaks[0];// only 1 peak
 			} else if(nfound==2) {
-				xp = xpeaks[1];// hay dos picos, cojemos el último
+				xp = xpeaks[1];// there are 2 peaks, take the last
 			} else {
-				xp = xpeaks[2];// hay tres picos, cojemos el último 
+				xp = xpeaks[2];// there are 3 peaks, take the last
 			}
 
 			Int_t bin   = h[k]->GetXaxis()->FindBin(xp);  //bin position of the peak

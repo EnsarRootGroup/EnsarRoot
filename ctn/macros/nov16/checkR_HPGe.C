@@ -1,5 +1,29 @@
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////			Macro to check the Results of the HPGe					////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l checkR_HPGe.C								////
+////																	////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
 
-void checkResults_HPGe() {
+//NOTE: if you want to analyze the HPGePoint 
+//      you have to activate it before to execute runsim.C,
+//		in order to create its branch
+//
+//		How to activate it: comment/descomment this line
+//		HPGe: ctn/detector/EnsarHPGeDet.cxx 
+//				->FairRootManager::Instance()->Register("HPGeDetPoint", GetName(), fPointCollection, kTRUE);
+//		Then, you have to do "make" again in the EnsarRoot build directory and execute runsim.C  
+
+void checkR_HPGe() {
 
 
 	//ROOT ENVIRONMENT
@@ -8,13 +32,13 @@ void checkResults_HPGe() {
 	gStyle->SetOptFit(0);
 
 	//INPUT FILE
-	char inputFile[250] = "outsim.root";                                              
+	char inputFile[250] = "outsim.root";   //select root file                                             
 	TFile *file1 = TFile::Open(inputFile);
 
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION-----------------------------------------------------------
+	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change these ranges
     TH1F* h1   = new TH1F("h1","Primary PDG Code",60,-30,30);
     TH1F* h1_2 = new TH1F("h1_2","Secondaries PDG Code",60,-30,30);
     TH1F* h2   = new TH1F("h2","Primary Energy",1100,0,11);
@@ -33,13 +57,15 @@ void checkResults_HPGe() {
 	TBranch *branchMCTrack = tree ->GetBranch("MCTrack");
 	branchMCTrack->SetAddress(&MCTrackCA);
 
-	//Crystal Points (input)   -------------------------------------------------------
+	//HPGe (input)   -------------------------------------------------------
+	//HPGe Hit
 	TClonesArray* hpgeHitCA;
 	EnsarHPGeDetHit** hpgeHit;
 	hpgeHitCA = new TClonesArray("EnsarHPGeDetHit",5);
 	TBranch *branchEnsarHPGeDetHit = tree ->GetBranch("HPGeDetHit");
 	branchEnsarHPGeDetHit->SetAddress(&hpgeHitCA );
 
+	//HPGe Point
 	TClonesArray* hpgePointCA;
 	EnsarHPGeDetPoint** hpgePoint;
 	hpgePointCA = new TClonesArray("EnsarHPGeDetPoint",5);

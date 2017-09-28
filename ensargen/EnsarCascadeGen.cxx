@@ -1,9 +1,20 @@
-// ----------------------------------------------------------------------
-// ----- 												            -----
-// -----           EnsarCascadeGen source file                      -----
-// ----- gamma generator of one cascade with angular correlation    ----- 
-// ----- 												            -----
-// ----------------------------------------------------------------------
+// *********************************************************************
+// *****             EnsarCascadeGen source file                   *****
+// *****   												           *****
+// *****      Simply Gamma Cascade Generator  	                   *****
+// *****      with Angular Correlations                       	   *****
+// ***** 												           *****
+// *****      Works with the data files:				    	   *****
+// ***** 		 -Co_cascade.dat								   *****
+// *****		 -Si_12900_cascade.dat		    				   *****
+// ***** 		 -Gamma_AngularC_200k.dat						   *****
+// ***** 	  or any file with the same data structure		       *****
+// *****												           *****
+// ***** elisabet.galiana@usc.es				                   *****
+// ***** Universidad de Santiago de Compostela                     *****
+// ***** Dpto. Física de Partículas                                *****
+// *****   												           *****
+// *********************************************************************
 
 #include "EnsarCascadeGen.h"
 
@@ -218,7 +229,7 @@ Bool_t EnsarCascadeGen::ReadEvent(FairPrimaryGenerator* primGen)
 		Double_t Z=0.;
 	  	  
 	  	//adding the gammas of Si* cascade
-		//primGen->AddTrack(fPDGType, px1, py1, pz1, X, Y, Z);
+		primGen->AddTrack(fPDGType, px1, py1, pz1, X, Y, Z);
 		primGen->AddTrack(fPDGType, px2, py2, pz2, X, Y, Z);
 				
 		//TVector3 mom;
@@ -279,7 +290,7 @@ void EnsarCascadeGen::ReadParameters() {
     fener_i 	= new Double_t [nLevel];		//Initial energy of each level
 	fener_f 	= new Double_t [nLevel];		//Final energy of each level
 	fener_gamma = new Double_t [nLevel];		//Gamma energy
-	fBR 		= new Double_t [nLevel];		//Branching Ratio
+	fBR 		= new Double_t [nLevel];		//Branching Ratios
 	//def dynamic matrix
 	fA 	= new Double_t* [nLevel];				//Angular Coeficients A2 and A4
 	for(Int_t i=0; i<nLevel; i++){
@@ -303,7 +314,7 @@ void EnsarCascadeGen::ReadParameters() {
 	 	cout<<"E_gamma= "<<fener_gamma[i]<<endl;
     }
     
-    // ---- Reading Branching Ratio
+    // ---- Reading Branching Ratios
     fInputFile->ignore(256,'\n');
     fInputFile->ignore(256,'\n');
     for(int i = 0; i < nLevel; i++){ 

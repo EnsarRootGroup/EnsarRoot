@@ -1,9 +1,9 @@
-///////////////////////////////////////////////////////
-////                                               ////
-////  Cascade of Gammas with Angular Correlation   ////
-////         400keV->200keV->0                     ////
-////                                               ////
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////                                                    ////
+////      Cascade of Gammas with Angular Correlations   ////
+////               400->200->0 keV                      ////
+////                                                    ////
+////////////////////////////////////////////////////////////
 Energy(GeV), Number of Levels
 0.0004     1                         
 Energy of the transitions (initial -->  final)
@@ -12,9 +12,15 @@ Energy of gamma emmited in the transition
 0.0002       		        
 Branching Ratios
 1
-Angular correlation coefficeints (A2 and A4)
+Angular correlation coefficients (A2 and A4)
 0.95	        0.95
 
+//It works with ensargen/EnsarCascadeGen.h & EnsarCascadeGen.cxx
+//
 //Only change the values
 //don't modify the file structure 
-
+//change A2=0 & A4=0 to generate an ISOTROPIC distribution of gammas (without Angular Correlations)
+//
+//elisabet.galiana@usc.es
+//Universidad de Santiago de Compostela
+//Dpto. Física de Partículas

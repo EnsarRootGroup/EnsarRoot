@@ -1,5 +1,33 @@
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////		Macro to check the Results of the Petals					////
+////					Crystal, Hit, Point								////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l checkR_petals.C							////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
 
-void checkResults_petals() {
+
+
+//NOTE: if you want to analyze the HPGePoint & CrystalPoint
+//      you have to activate them before to execute runsim.C,
+//		in order to create their branches
+//
+//		How to activate them: comment/descomment these lines
+//		HPGe: ctn/detector/EnsarHPGeDet.cxx 
+//				->FairRootManager::Instance()->Register("HPGeDetPoint", GetName(), fPointCollection, kTRUE);
+//		Califa: calo/cal/R3BCalo.cxx
+//				->FairRootManager::Instance()->Register("CrystalPoint", GetName(), fCaloCollection, kTRUE);
+//		Then, you have to do "make" again in the EnsarRoot build directory and execute runsim.C  
+
+void checkR_petals() {
 
 
 	//ROOT ENVIRONMENT
@@ -14,7 +42,7 @@ void checkResults_petals() {
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION----------------------------------------------------------- Change the intervals for each run energy
+	//HISTOGRAMS DEFINITION----------------------------------------------------------- Change the intervals
   	
 	TH1F* h1_Cry = new TH1F("h1_Cry","Crystal ID",150,0,150);
 	TH1F* h2_Cry = new TH1F("h2_Cry","Crystal Energy (MeV)",200,0,10.2);
@@ -30,7 +58,7 @@ void checkResults_petals() {
 	
 	
 	//----- CALIFA detector--------------//
-	//Crystal Points
+	//Crystal Hit
 	TClonesArray* crystalHitCA;  
 	R3BCaloCrystalHitSim** crystalHit;
 	crystalHitCA = new TClonesArray("R3BCaloCrystalHitSim",5);
@@ -45,7 +73,7 @@ void checkResults_petals() {
 	branchCaloHit->SetAddress(&caloHitCA);
 	
 	
-	//Calo Points
+	//Crystal Points
 	TClonesArray* crystalPointCA;  
 	R3BCaloPoint** crystalPoint;
 	crystalPointCA = new TClonesArray("R3BCaloPoint",5);
@@ -107,13 +135,7 @@ void checkResults_petals() {
 		
 			h1_Cal->Fill(caloHit[h]->GetEnergy()*1000); //MeV
 			h3_Cal->Fill(caloHit[h]->GetTheta());	    //rad
-			h4_Cal->Fill(caloHit[h]->GetPhi());	    //rad
-			/*h1_Cal->Fill(caloHit[h]->GetNbOfCrystalHits());	
-			h2_Cal->Fill(caloHit[h]->GetEnergy()*1000);	
-			h3_Cal->Fill(caloHit[h]->GetTheta());	
-			h4_Cal->Fill(caloHit[h]->GetPhi());
-			h2_CC->Fill(GetCMEnergy(caloHit[h]->GetTheta(),caloHit[h]->GetEnergy()*1000,beta));			   //with Boost of Lorentz
-			h2_CC2->Fill(caloHit[h]->GetTheta(),GetCMEnergy(caloHit[h]->GetTheta(),caloHit[h]->GetEnergy()*1000,beta));//with Boost of Lorentz*/
+			h4_Cal->Fill(caloHit[h]->GetPhi());	   		//rad
 		}
 		if(caloHitsPerEvent)    delete[] caloHit;
 		

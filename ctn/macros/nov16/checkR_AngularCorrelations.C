@@ -1,6 +1,55 @@
+////////////////////////////////////////////////////////////////////////////////////
+////																			////
+////		--- Simulation of the Lisbon Nov-2016 setup ---						////
+////																			////
+////		Macro to check Angular Correlations between primary gammas			////
+////		applying the HPGe condition (see note1)								////
+////																			////
+////		Usage:																////
+////			1st: select the root file path & change the ranges (OPTIONAL)	////
+////			2nd: root -l checkR_AngularCorrelations.C						////
+////																			////
+////		Calculate: 															////
+////			-MCTrack: angle between Primary Gammas							////
+////																			////
+////			-Calo: petals Hit energy										////
+////																			////
+////			 Applying the HPGe condition:									////
+////				·petals Hit energy											////
+////				·Hit energy of petal at 90º & 180º w.r.t.HPGe				////
+////				·theta & phi angles 										////
+////				·multiplicity												////
+////				·Theta vs Energy Petals, Phi vs Energy Petals				////
+////				·Theta vs Phi												////
+////				·angle between gammas 										////
+////				·angle between gammas vs Energy								////
+////																			////
+////			-Save the histograms in a root file-> Histograms.root			////
+////																			////
+//// **elisabet.galiana@usc.es													////
+//// ** Universidad de Santiago de Compostela									////
+//// ** Dpto. Física de Partículas 												////
+////////////////////////////////////////////////////////////////////////////////////
 
 
-void checkResults_gammaCorrelation() {
+
+//NOTE1: The HPGe condition
+//  It is the application of the condition that one low energy gamma arrives to the HPGe detector 
+//  and the other gamma, more energetic, arrives to one of both petals
+//  we have to change the energy limits (limit1&limit2) for different cascades
+
+//NOTE2: if you want to analyze the HPGePoint & CrystalPoint
+//      you have to activate them before to execute runsim.C,
+//		in order to create their branches
+//
+//		How to activate them: comment/descomment these lines
+//		HPGe: ctn/detector/EnsarHPGeDet.cxx 
+//				->FairRootManager::Instance()->Register("HPGeDetPoint", GetName(), fPointCollection, kTRUE);
+//		Califa: calo/cal/R3BCalo.cxx
+//				->FairRootManager::Instance()->Register("CrystalPoint", GetName(), fCaloCollection, kTRUE);
+//		Then, you have to do "make" again in the EnsarRoot build directory and execute runsim.C  
+
+void checkR_AngularCorrelations() {
 
 	//ROOT ENVIRONMENT
 	gROOT->SetStyle("Plain");
@@ -8,37 +57,36 @@ void checkResults_gammaCorrelation() {
 	gStyle->SetOptFit(0);
 
 	//INPUT FILE 
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_W.root";  
+	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_W.root";  			//change the root file
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_iso.root";  
-	//char inputFile[250] = "outsim.root"; 
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_W.root"; 
-	char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_iso.root";                                           
+	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_iso.root"; 
+	char inputFile[250] = "outsim.root";                                           
 	TFile *file1 = TFile::Open(inputFile);
 
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change this maximum energies
-	TH1F* h3   = new TH1F("h3","HPGe Total Energy",1000,0,13.);
+	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change these ranges
+	TH1F* h3         = new TH1F("h3","HPGe Total Energy",1000,0,13.);
 	
-	TH1F* h1_Cal = new TH1F("h1_Cal","Petals Hit Total Energy",2000,0,15.); 
-	TH1F* h1_Cal_2 = new TH1F("h1_Cal_2","Petals Hit Energy with Ge Condition",2000,0,13.); 
-	TH1F* h2_Cal_1 = new TH1F("h2_Cal_1","Energy of Petals",2000,0,13.);
-	TH1F* h2_Cal_2 = new TH1F("h2_Cal_2","Energy of Petals",2000,0,13.);
-	TH1F* h3_Cal = new TH1F("h3_Cal","Hit Theta",2000,-3.2,3.2);
-	TH1F* h4_Cal = new TH1F("h4_Cal","Hit Phi",200,-3.6,3.6);
-	TH1F* h5_Cal = new TH1F("h5_Cal","Hits Multiplicity",10,0,10);
-	TH1F* h8_Cal_90 = new TH1F("h8_Cal_0","Energy of Petal around 90º",2000,0,13.);
+	TH1F* h1_Cal     = new TH1F("h1_Cal","Petals Hit Total Energy",2000,0,15.); 
+	TH1F* h1_Cal_2   = new TH1F("h1_Cal_2","Petals Hit Energy with Ge Condition",2000,0,13.); 
+	TH1F* h2_Cal_1   = new TH1F("h2_Cal_1","Energy of Petals",2000,0,13.);
+	TH1F* h2_Cal_2   = new TH1F("h2_Cal_2","Energy of Petals",2000,0,13.);
+	TH1F* h3_Cal     = new TH1F("h3_Cal","Hit Theta",2000,-3.2,3.2);
+	TH1F* h4_Cal     = new TH1F("h4_Cal","Hit Phi",200,-3.6,3.6);
+	TH1F* h5_Cal     = new TH1F("h5_Cal","Hits Multiplicity",10,0,10);
+	TH1F* h8_Cal_90  = new TH1F("h8_Cal_90","Energy of Petal around 90º",2000,0,13.);
 	TH1F* h8_Cal_180 = new TH1F("h8_Cal_180","Energy of Petal around 180º",2000,0,13.);
-	
-	TH2F* h6_Cal = new TH2F("h6_Cal","Theta vs Energy Petals", 2000,-3.2,3.2,2000,0,13.);
-	TH2F* h7_Cal = new TH2F("h7_Cal","Phi vs Energy Petals", 2000,-3.6,3.6,2000,0,13.);
-	TH2F* h9_Cal = new TH2F("h_9_Cal","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
-	TH2F* h9_Cal_90 = new TH2F("h_9_Cal_90","Theta vs Phi (90)", 720,0.,3.6,720,-3.6,3.6);	
+	TH2F* h6_Cal     = new TH2F("h6_Cal","Theta vs Energy Petals", 2000,-3.2,3.2,2000,0,13.);
+	TH2F* h7_Cal     = new TH2F("h7_Cal","Phi vs Energy Petals", 2000,-3.6,3.6,2000,0,13.);
+	TH2F* h9_Cal     = new TH2F("h_9_Cal","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
+	TH2F* h9_Cal_90  = new TH2F("h_9_Cal_90","Theta vs Phi (90)", 720,0.,3.6,720,-3.6,3.6);	
 	TH2F* h9_Cal_180 = new TH2F("h_9_Cal_180","Theta vs Phi (180)", 720,0.,3.6,720,-3.6,3.6);	
 	
-	TH1F* h_alpha_W = new TH1F("h_alpha_W","Reconstructed Angle between primary photons",200,0.,3.6);
-	TH1F* h_alpha_MC = new TH1F("h_alpha_MC","MCTrack Reconstructed Angle",200,0.,3.6);
+	TH1F* h_alpha_W   = new TH1F("h_alpha_W","Reconstructed Angle between primary photons",200,0.,3.6);
+	TH1F* h_alpha_MC  = new TH1F("h_alpha_MC","MCTrack Reconstructed Angle",200,0.,3.6);
 	TH2F* h_alpha_egy = new TH2F("h_alpha_egy","Alpha vs Energy", 2000,0.,3.6,2000,0,12.);
 
 	//----   MCTrack (input)   -------------------------------------------------------
@@ -81,7 +129,7 @@ void checkResults_gammaCorrelation() {
 	branchCaloHit->SetAddress(&caloHitCA);
 	
 	
-	//Calo Points
+	//Crystal Points
 	/*TClonesArray* crystalPointCA;  
 	R3BCaloPoint** crystalPoint;
 	crystalPointCA = new TClonesArray("R3BCaloPoint",5);
@@ -99,11 +147,11 @@ void checkResults_gammaCorrelation() {
     Double_t limit1 = 0.0, limit2=0.0;
     TVector3 momentum;
     
-    //lower and upper limits Cascade Generator
+    //lower and upper limits Si-12900 cascade Generator
     limit1=1.779 - 0.01*1.779;//-1% of gamma energy=1.779
     limit2=1.779 + 0.01*1.779;//+1%
     
-    //lower and upper limits Co Cascade Generator
+    //lower and upper limits Co-60 cascade Generator
     //limit1=1.172 - 0.01*1.172;//-1% of gamma energy=1.172
     //limit2=1.172 + 0.01*1.172;//+1% 
     
@@ -168,8 +216,7 @@ void checkResults_gammaCorrelation() {
 			}
 		}*/
 		
-		//LOOP in MC mother tracks----------------------------------------------
-		
+		//LOOP in MC mother tracks----------------------------------------------		
 		Double_t Theta1_MC=0., Theta2_MC=0.;
     	Double_t Phi1_MC=0., Phi2_MC=0.;
     	Double_t E1_MC=0., E2_MC=0.;
@@ -243,8 +290,8 @@ void checkResults_gammaCorrelation() {
 			energyGe = hpgeHit[h]->GetEnergy()*1000;//MeV
 			h3->Fill(energyGe);
 			
-			if (energyGe>limit1 && energyGe<limit2){
-			
+			if (energyGe>limit1 && energyGe<limit2){ //Applying the HPGe condition
+													 //change the limit1 & limit2 for different cascades
 			 Double_t px1=0., py1=0., pz1=0.;			
 			 Double_t px2=0., py2=0., pz2=0.;	
 			 Double_t Theta2=0., ThetaGe=0.; 
@@ -263,8 +310,8 @@ void checkResults_gammaCorrelation() {
 				for(Int_t i=0;i<caloHitsPerEvent;i++){
 				
 					h1_Cal_2->Fill(caloHit[i]->GetEnergy()*1000); //MeV
-					h3_Cal->Fill(caloHit[i]->GetTheta());	    //rad
-					h4_Cal->Fill(caloHit[i]->GetPhi());	    	//rad
+					h3_Cal->Fill(caloHit[i]->GetTheta());	      //rad
+					h4_Cal->Fill(caloHit[i]->GetPhi());	    	  //rad
 					
 					Theta2 = caloHit[i]->GetTheta();
 					Phi2 = caloHit[i]->GetPhi();
@@ -360,8 +407,7 @@ void checkResults_gammaCorrelation() {
 	// END LOOP IN THE EVENTS---------------------------------------------------------
 	
 	//Save Histograms in a file
-	
-	TFile* Histos_Co=new TFile("Histos_Co_W.root","recreate");
+	TFile* Histos=new TFile("Histosgrams.root","recreate");
 	h3->Write();
 	h1_Cal->Write();
 	h1_Cal_2->Write();
@@ -378,7 +424,7 @@ void checkResults_gammaCorrelation() {
 	h9_Cal->Write();
 	h9_Cal_90->Write();
 	h9_Cal_180->Write();
-	Histos_Co->Close();
+	Histos->Close();
 
 	// HISTOGRAMS--------------------------------------------------------------------- 
 	

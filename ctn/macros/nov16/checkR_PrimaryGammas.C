@@ -1,6 +1,31 @@
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////		Macro to checkResults of the Petals & HPGE					////
+////		for primary gammas, imposing motherID=-1					////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l checkR_PrimaryGammas.C						////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
 
+//NOTE: if you want to analyze the HPGePoint & CrystalPoint
+//      you have to activate them before to execute runsim.C,
+//		in order to create their branches
+//
+//		How to activate them: comment/descomment these lines
+//		HPGe: ctn/detector/EnsarHPGeDet.cxx 
+//				->FairRootManager::Instance()->Register("HPGeDetPoint", GetName(), fPointCollection, kTRUE);
+//		Califa: calo/cal/R3BCalo.cxx
+//				->FairRootManager::Instance()->Register("CrystalPoint", GetName(), fCaloCollection, kTRUE);
+                                       
 
-void checkResults_bothdet_motherID() {
+void checkR_PrimaryGammas() {
 
 
 	//ROOT ENVIRONMENT
@@ -15,7 +40,7 @@ void checkResults_bothdet_motherID() {
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change this maximum energies
+	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change these ranges
     TH1F* h1   = new TH1F("h1","Primary PDG Code",60,-30,30);
     TH1F* h1_2 = new TH1F("h1_2","Secondaries PDG Code",60,-30,30);
     TH1F* h2   = new TH1F("h2","Primary Energy",1100,0,11);
@@ -40,7 +65,7 @@ void checkResults_bothdet_motherID() {
 	
 	//----- HPGe detector--------------//
 
-	//Crystal Points  
+	//HPGe Hits  
 	TClonesArray* hpgeHitCA;
 	EnsarHPGeDetHit** hpgeHit;
 	hpgeHitCA = new TClonesArray("EnsarHPGeDetHit",5);
@@ -56,7 +81,7 @@ void checkResults_bothdet_motherID() {
 	
 	
 	//----- CALIFA detector--------------//
-	//Crystal Points  
+	//Crystal Hit  
 	TClonesArray* crystalHitCA;  
 	R3BCaloCrystalHitSim** crystalHit;
 	crystalHitCA = new TClonesArray("R3BCaloCrystalHitSim",5);
@@ -71,7 +96,7 @@ void checkResults_bothdet_motherID() {
 	branchCaloHit->SetAddress(&caloHitCA);
 	
 	
-	//Calo Points
+	//Crystal Points
 	TClonesArray* crystalPointCA;  
 	R3BCaloPoint** crystalPoint;
 	crystalPointCA = new TClonesArray("R3BCaloPoint",5);

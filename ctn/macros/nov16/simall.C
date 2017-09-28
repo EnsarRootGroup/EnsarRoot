@@ -100,10 +100,10 @@ void simall(Int_t nEvents = 1,
   run->AddModule(cave);
 
   //HPGe Detector and chamber definition
-  /*EnsarDetector* hpgedetector = new EnsarHPGeDet("EnsarHPGeDet",kTRUE);
+  EnsarDetector* hpgedetector = new EnsarHPGeDet("EnsarHPGeDet",kTRUE);
   hpgedetector->SetGeometryFileName(((TObjString*)fDetList->GetValue("HPGE"))->GetString().Data());
   hpgedetector->SetVerboseLevel(0); //screen info
-  run->AddModule(hpgedetector);*/
+  run->AddModule(hpgedetector);
 
   // CALIFA definition
   EnsarDetector* calo = new R3BCalo("Califa", kTRUE);
@@ -124,17 +124,17 @@ void simall(Int_t nEvents = 1,
 
   if (fGenerator.CompareTo("box") == 0  ) {
   // 2- Define the BOX generator
-  //Int_t pdgId          = 2212;         // geant particle id of the proton beam (exp Nov16)
-  Int_t pdgId          = 22;         // geant particle id of the photon beam
-  Double32_t theta1    = 0.;          // polar angle distribution (degrees) 30-120
+  //Int_t pdgId          = 2212;        // geant particle id of the proton beam 
+  Int_t pdgId          = 22;            // geant particle id of the photon beam
+  Double32_t theta1    = 0.;            // polar angle distribution (degrees)
   Double32_t theta2    = 180.;
-  Double32_t momentum  = 0.006068;     // GeV/c 6048keV energy of the beam
+  Double32_t momentum  = 0.006068;      // GeV/c 6048keV energy of the beam
   FairBoxGenerator* boxGen = new FairBoxGenerator(pdgId,1); //multiplicity
   boxGen->SetThetaRange (theta1,theta2);
   boxGen->SetCosTheta();
-  boxGen->SetPRange     (0.0002,0.0002);   // momentum of the beam GeV/c
-  boxGen->SetPhiRange   (0.0,360.0); // azimuthal angle
-  boxGen->SetXYZ        (0.,0.,0.);  // origin of the beam in the center
+  boxGen->SetPRange     (0.0002,0.0002);// momentum of the beam GeV/c
+  boxGen->SetPhiRange   (0.0,360.0);    // azimuthal angle (degrees)
+  boxGen->SetXYZ        (0.,0.,0.);     // origin of the beam in the center
   
   // add the box generator
   primGen->AddGenerator(boxGen);
@@ -145,15 +145,15 @@ void simall(Int_t nEvents = 1,
     primGen->AddGenerator(gen);
   }
   
-  //add the Si cascade generator
+  //add the Si-12643 cascade generator
    if (fGenerator.CompareTo("Sicascade") == 0  ) {
-    EnsarSiGenerator* SiGen = new EnsarSiGenerator("Si_cascade.dat",1);   
+    EnsarSiGenerator* SiGen = new EnsarSiGenerator("Si_12643_cascade.dat",1);   
     primGen->AddGenerator(SiGen);
   }
   
-  //add the Cascade generator
-   if (fGenerator.CompareTo("Cascade") == 0  ) {
-    EnsarCascadeGen* CascadeGen = new EnsarCascadeGen("Cascade.dat",1);   
+  //add the Si-12900 cascade generator
+   if (fGenerator.CompareTo("SiOneCascade") == 0  ) {
+    EnsarCascadeGen* CascadeGen = new EnsarCascadeGen("Si_12900_cascade.dat",1);   
     primGen->AddGenerator(CascadeGen);
   }
   
@@ -163,7 +163,7 @@ void simall(Int_t nEvents = 1,
     primGen->AddGenerator(CascadeGen);
   }
   
-  //add the Gamma cascade with AngularCorrelation generator (200keV)
+  //add the Gamma cascade generator
    if (fGenerator.CompareTo("Gamma_AngularC_200k") == 0  ) {
     EnsarCascadeGen* CascadeGen = new EnsarCascadeGen("Gamma_AngularC_200k.dat",1);   
     primGen->AddGenerator(CascadeGen);
@@ -181,7 +181,7 @@ void simall(Int_t nEvents = 1,
   
 
 // ----- Initialize CaloHitFinder task ------------------------------------
- /* Bool_t fCaloHitFinder = true;
+  Bool_t fCaloHitFinder = true;
   if(fCaloHitFinder) {
     R3BCaloHitFinder* caloHF = new R3BCaloHitFinder();
     caloHF->SetClusteringAlgorithm(1,0);    //square window
@@ -191,7 +191,7 @@ void simall(Int_t nEvents = 1,
     caloHF->SelectGeometryVersion(1116);
     caloHF->SetAngularWindow(3.2,3.2);      //[0.25 around 14.3 degrees, 3.2 for the complete calorimeter]
     run->AddTask(caloHF);
-  }  */
+  }
  
  
  

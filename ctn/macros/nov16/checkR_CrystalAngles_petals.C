@@ -1,5 +1,34 @@
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////		Macro to Crystal Identification Angles in Petals			////
+////																	////
+////		Calculate: 													////
+////			imposing a signal in CaloHit it calculates the 			////
+////			theta&phi angles for each Crystal				 		////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l checkR_CrystalAngles_petals.C				////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
 
-void checkResults_Crystals() {
+//NOTE: if you want to analyze the HPGePoint & CrystalPoint
+//      you have to activate them before to execute runsim.C,
+//		in order to create their branches
+//
+//		How to activate them: comment/descomment these lines
+//		HPGe: ctn/detector/EnsarHPGeDet.cxx 
+//				->FairRootManager::Instance()->Register("HPGeDetPoint", GetName(), fPointCollection, kTRUE);
+//		Califa: calo/cal/R3BCalo.cxx
+//				->FairRootManager::Instance()->Register("CrystalPoint", GetName(), fCaloCollection, kTRUE);
+//		Then, you have to do "make" again in the EnsarRoot build directory and execute runsim.C  
+
+void checkR_CrystalAngles_petals() {
 
 	//ROOT ENVIRONMENT
 	gROOT->SetStyle("Plain");
@@ -7,13 +36,13 @@ void checkResults_Crystals() {
 	gStyle->SetOptFit(0);
 
 	//INPUT FILE  
-	char inputFile[250] = "outsim.root";                                            
+	char inputFile[250] = "outsim.root";    //select root file                                          
 	TFile *file1 = TFile::Open(inputFile);
 
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change this maximum energies
+	//HISTOGRAMS DEFINITION-----------------------------------------------------------//Change these ranges
 	TH2F* h_Cry_1 = new TH2F("h_Cry_1","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);	
 	TH2F* h_Cry_2 = new TH2F("h_Cry_2","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);
 	TH2F* h_Cry_3 = new TH2F("h_Cry_3","Theta vs Phi", 720,0.,3.6,720,-3.6,3.6);
@@ -70,7 +99,7 @@ void checkResults_Crystals() {
 	branchCaloHit->SetAddress(&caloHitCA);
 	
 	
-	//Calo Points
+	//Crystal Points
 	/*TClonesArray* crystalPointCA;  
 	R3BCaloPoint** crystalPoint;
 	crystalPointCA = new TClonesArray("R3BCaloPoint",5);

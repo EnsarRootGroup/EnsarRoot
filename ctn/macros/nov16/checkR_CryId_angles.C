@@ -1,12 +1,40 @@
-/**********************************************************/
-/*  This macro provide Theta, Phi angles for each CryId   */
-/*														  */
-/**********************************************************/
+////////////////////////////////////////////////////////////////////////////
+////																	////
+////		--- Simulation of the Lisbon Nov-2016 setup ---				////
+////																	////
+////		Macro to analyze Crystal angles Petals						////
+////			theta&phi angles for each CryId							////
+////																	////
+////		Usage:														////
+////			1st: select the root file & the ranges (OPTIONAL)		////
+////			2nd: root -l checkR_CryId_angles.C						////
+////																	////
+////		Calculate: 													////
+////			-Crystal: ID, Theta, Phi and 							////
+////					there are some func(utilities.C) to calculate	////
+////					Mean, Leftedge, Center of the Histos 			////
+////																	////
+//// **elisabet.galiana@usc.es											////
+//// ** Universidad de Santiago de Compostela							////
+//// ** Dpto. Física de Partículas 										////
+////////////////////////////////////////////////////////////////////////////
+
+//NOTE1: if you want to analyze the CrystalPoint
+//      you have to activate it before to execute runsim.C,
+//		in order to create its branch
+//
+//		How to activate it: comment/descomment these lines
+//		Califa: calo/cal/R3BCalo.cxx
+//				->FairRootManager::Instance()->Register("CrystalPoint", GetName(), fCaloCollection, kTRUE);
+//		Then, you have to do "make" again in the EnsarRoot build directory and execute runsim.C  
+
+//NOTE2: it is better to use a low energy gamma simulation (100-200 keV)
+//		 because the gamma arrives and stops at the same crystal 
 
 #include "TMath.h"
 #include "utilities.C"
 
-void checkResults_CryId_angles() {
+void checkR_CryId_angles() {
 
 	//ROOT ENVIRONMENT
 	gROOT->SetStyle("Plain");
@@ -14,15 +42,15 @@ void checkResults_CryId_angles() {
 	gStyle->SetOptFit(0);
 
 	//INPUT FILE  
-	char inputFile[250] = "outsim.root";                                            
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_gamma_200kev.root"; 
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_g_200keV_W2.root";	
+	char inputFile[250] = "outsim.root"; //select root file                                      
+	//char inputFile[250] = "/mnt/scratch/eli/outsim_gamma_200kev.root"; //		Isotropic simulation
+	//char inputFile[250] = "/mnt/scratch/eli/outsim_g_200keV_W2.root";	 //		Angular Correlations simulation
 	TFile *file1 = TFile::Open(inputFile);
 
 	//READING TREE
 	TTree* tree = (TTree*)file1->Get("ensartree");
 
-	//HISTOGRAMS DEFINITION-----------------------------------------------------------
+	//HISTOGRAMS DEFINITION--------------------------------------------------------------------//Change these ranges
 	//TH1F* h_Cry_1 = new TH1F("h_Cry_1","Primary Gammas Hits of each Crystal",130.,0.,130.);	
 	//TH2F* h_MC_2 = new TH2F("h_MC_2","Theta_MC of each Crystal", 128.,0.,128.,360,0.,3.6);
 	//TH2F* h_MC_3 = new TH2F("h_MC_3","Phi_MC of each Crystal", 128.,0.,128.,720,-3.6,3.6);
@@ -65,7 +93,7 @@ void checkResults_CryId_angles() {
 	branchCaloHit->SetAddress(&caloHitCA);*/
 	
 	
-	//Calo Points
+	//Crystal Points
 	/*TClonesArray* crystalPointCA;  
 	R3BCaloPoint** crystalPoint;
 	crystalPointCA = new TClonesArray("R3BCaloPoint",5);
@@ -284,7 +312,7 @@ Float_t getLeftEdge(TH1F *histo)
 	// HISTOGRAMS--------------------------------------------------------------------- 
 	
 	Int_t j;
-	j=120;
+	j=10; //change it!
 	
 	//CrystalHit
 	TCanvas* c1 = new TCanvas("Theta Angle for CryId","Theta Angle for CryId",0,0,1000,1000);          
@@ -293,24 +321,6 @@ Float_t getLeftEdge(TH1F *histo)
 	c1->Divide(3,2); 
 	
 	c1->cd(1); 
-	histos[66]->Draw();
-	
-	c1->cd(2); 
-	histos[68]->Draw();
-	
-	c1->cd(3); 
-	histos[64]->Draw();
-	
-	c1->cd(4); 
-	histos[70]->Draw();
-	
-	c1->cd(5); 
-	histos[67]->Draw();
-	
-	c1->cd(6); 
-	histos[69]->Draw();
-	
-	/*c1->cd(1); 
 	histos[j]->Draw();
 	
 	c1->cd(2); 
@@ -326,10 +336,10 @@ Float_t getLeftEdge(TH1F *histo)
 	histos[j+4]->Draw();
 	
 	c1->cd(6); 
-	histos[j+5]->Draw();*/
+	histos[j+5]->Draw();
 	
 
-	/*TCanvas* c2 = new TCanvas("Angle for CryId","Angle for CryId",0,0,1000,1000);          
+	TCanvas* c2 = new TCanvas("Angle for CryId","Angle for CryId",0,0,1000,1000);          
 	c2->SetFillColor(0);       
 	c2->SetFrameFillColor(0); 
 	c2->Divide(3,2); 
@@ -351,7 +361,6 @@ Float_t getLeftEdge(TH1F *histo)
 	
 	c2->cd(6); 
 	histos[j+11]->Draw();
-	*/
 	
 
 }
