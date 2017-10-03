@@ -1,17 +1,17 @@
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to check the Results of the Petals					////
-////					Crystal, Hit, Point								////
-////																	////
-////		Usage:														////
-////			1st: select the root file & the ranges (OPTIONAL)		////
-////			2nd: root -l checkR_petals.C							////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to check the Results of the Petals					
+////					Crystal, Hit, Point								
+////																	
+////		Usage:														
+////			1st: select the root file & the ranges (OPTIONAL)		
+////			2nd: root -l checkR_petals.C							
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 

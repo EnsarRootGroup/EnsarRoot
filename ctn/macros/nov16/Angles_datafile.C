@@ -1,21 +1,21 @@
 {
 
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to calculate the Theta&Phi angles of each Crystal		////
-////																	////
-////		It use the CrystalId_Theta_Phi.dat data file which 			////
-////		the origin of this data is MCTrack.							////
-////																	////
-////		Usage:														////
-////			1st: select the root file and the root file path		////
-////			2nd: root -l Angles_datafile.C							////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to calculate the Theta&Phi angles of each Crystal		
+////																	
+////		It use the CrystalId_Theta_Phi.dat data file which 			
+////		the origin of this data is MCTrack.							
+////																	
+////		Usage:														
+////			1st: select the root file and the root file path		
+////			2nd: root -l Angles_datafile.C							
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 

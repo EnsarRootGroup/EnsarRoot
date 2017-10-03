@@ -162,7 +162,7 @@ void simall(Int_t nEvents = 1,
     EnsarCascadeGen* CascadeGen = new EnsarCascadeGen("Co_cascade.dat",1);   
     primGen->AddGenerator(CascadeGen);
   }
-  
+
   //add the Gamma cascade generator
    if (fGenerator.CompareTo("Gamma_AngularC_200k") == 0  ) {
     EnsarCascadeGen* CascadeGen = new EnsarCascadeGen("Gamma_AngularC_200k.dat",1);   

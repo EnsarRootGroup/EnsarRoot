@@ -4,7 +4,7 @@
 ////																										
 ////							--- Simulation of the Lisbon Nov-2016 setup ---								
 ////																										
-////		This Macro analyze the Crystal Response of the Petals.							 				
+////		This Macro analyze the Crystal Response of the Petals with ERRORS.				 				
 ////																										
 ////		It study the ratio of an isotropic and a correlated distribution in simulation					
 ////		and the polar angle (theta) for each Crystal.													
@@ -22,11 +22,12 @@
 ////		This Macro reads:																				
 ////		 -the CryId and its Theta angle from the CrystalId_Theta.dat data file							
 ////		 -Num.gammas for each CryId of an isotropic distribution from the NumGammas_Cry_isotropic.dat	
-////		 -Num.gammas for each CryId of an AngularCorr distribution from the NumGammas_Cry_AngularC.dat	
+////		 -Num.gammas for each CryId of an AngularCorr distribution from the NumGammas_Cry_AngularC.dat						
 ////																										
 ////		Calculate:																						
 ////		 -Ratio gammas R= Num.gammas isotropic / Num.gammas with AngularCorr, for each CrystalId		
-////		 -Normalized theoretical angular correlations function											
+////		 -Normalized theoretical angular correlations function	
+////		 -The relative error of the Ratio of gammas for each CryId												
 ////																										
 ////		Graph representation: Theta angle vs Ratio gammas for each CrystalId							
 ////							  Normalized theoretical angular correlations function						
@@ -41,10 +42,9 @@
 	gStyle->SetOptFit(111);
 	gStyle->SetPalette(1);
 
-	//OPEN FILES
+	//OPEN & READ DATA FILES ------------------------------------
 	
 	//FILE 1 CrystalId and Theta angle
-	//ifstream *File1 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/Crystal_Resolution/CrystalId_Theta.dat");
 	ifstream *File1 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/ENSARRoot/EnsarRoot_source/ctn/macros/nov16/CrystalId_Theta.dat");
 
 	const Int_t nLevel=128;
@@ -64,7 +64,6 @@
     //fclose(File1);
     
     //FILE 2 Number of gammas have been arrived to each Crystal -> Isotropic distribution
-	//ifstream *File2 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/Crystal_Resolution/iso_200keV/NumGammas_Cry_isotropic.dat");
 	ifstream *File2 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/ENSARRoot/EnsarRoot_source/ctn/macros/nov16/NumGammas_Cry_isotropic.dat");
 
 	Double_t CryId2[nLevel];
@@ -81,7 +80,6 @@
     }
     
     //FILE 3 Number of gammas have been arrived to each Crystal -> Angular Correlated distribution
-	//ifstream *File3 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/Crystal_Resolution/W_200keV_2/NumGammas_Cry_AngularC.dat");
 	ifstream *File3 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/ENSARRoot/EnsarRoot_source/ctn/macros/nov16/NumGammas_Cry_AngularC.dat");
 
 	Double_t CryId3[nLevel];
@@ -98,25 +96,50 @@
     }
    
    
-   //CALCULATION
+   //CALCULATION -----------------------------------------------------------------------------------------------------------
+   //Ratio of gammas
    Double_t Gammas[nLevel];
    Double_t x, y, frac;
    x=0.;
    y=0.;
-   frac=0.;
+   Ratio=0.;
    
    for(Int_t i = 0; i < nLevel; i++){ 
    
    		x= Gammas_iso[i];
 	 	y= Gammas_W[i];
-	 	frac=y/x;
-	 	Gammas[i]=frac;
+	 	Ratio=y/x;
+	 	Gammas[i]=Ratio;
 	 	
 	 	cout<<"y="<<y<<" x="<<x<<endl;
-	 	cout<<"frac= "<<frac<<endl;
+	 	cout<<"Ratio= "<<Ratio<<endl;
     }
     
-   //FUNCTION
+    //Ratio of gamma Error
+    Double_t  Error_Gammas[nLevel];
+    Double_t error_iso;
+    Double_t error_W;
+    Double_t W, iso, a, b;
+    W=0.;
+    iso=0.;
+    a=0.;
+    b=0.;
+    
+    for(Int_t i = 0; i < nLevel; i++){ 
+    
+    	error_iso= sqrt(Gammas_iso[i]);
+    	error_W= sqrt(Gammas_W[i]);
+    	iso= Gammas_iso[i];
+    	W= Gammas_W[i];
+    	
+    	a= pow(((error_iso*W)/pow(iso,2)),2);
+    	b= pow(error_W/iso ,2);
+    	Error_Gammas[i]=(sqrt(a+b))/Gammas[i];
+    	
+    	cout<<"Error_R= "<<Error_Gammas[i]<<endl;
+    }
+    
+   //FUNCTION ---------------------------------------------------------------------------------------------------------------
    //The Theoretical Angular Correlations function is		W=1+A2cos^2(theta)+A4cos^4(theta)
    // 														where the A2, A4 Angular Correlation coefficients depends on 
    // 														the spin-parity of the transition in the gamma cascade
@@ -155,9 +178,6 @@
    gr->SetTitle("Ratio gammas vs Theta angle for each CryId");
    gr->GetXaxis()->SetTitle("Theta (rad)");
    gr->GetYaxis()->SetTitle("Counts Gamma_W/Gamma_iso");
-   //gr->Draw("AP");
-   //gr->Draw("A*");
-   //fa1->Draw("same");
    
    //CANVAS
    /*TCanvas *c1 = new TCanvas("c1","A Simple",200,10,700,500);
@@ -179,4 +199,11 @@
    c1->SetFrameFillColor(0); 
    gr->Draw("A*");
    fa1->Draw("same");
+   
+   TLegend *leg = new TLegend(0.5,0.7,0.8,0.8);
+   leg->AddEntry(fa1, "Theoretical function", "l");
+   leg->SetFillColor(0);
+   leg->Draw();
+   leg->AddEntry(gr, "Ratio gammas its error is the order of points", "p*");
+
 }

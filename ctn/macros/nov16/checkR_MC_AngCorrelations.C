@@ -1,23 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to checkResults in MCTrack & Petals					////
-////																	////
-////		Calculate: 													////
-////			-MCTrack: the angle between two primary gammas,			////
-////			the energy and theta&phi of primary particles, 			////
-////			Primary & Secondary PDG Code							////
-////			-Crystal: ID, Type, Copy, energy						////
-////			-Calo: energy, theta&phi angles							////
-////																	////
-////		Usage:														////
-////			1st: select the root file & the ranges (OPTIONAL)		////
-////			2nd: root -l checkR_MC_AngCorrelations.C				////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to checkResults in MCTrack & Petals					
+////																	
+////		Calculate: 													
+////			-MCTrack: the angle between two primary gammas,			
+////			the energy and theta&phi of primary particles, 			
+////			Primary & Secondary PDG Code							
+////			-Crystal: ID, Type, Copy, energy						
+////			-Calo: energy, theta&phi angles							
+////																	
+////		Usage:														
+////			1st: select the root file & the ranges (OPTIONAL)		
+////			2nd: root -l checkR_MC_AngCorrelations.C				
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 void checkR_MC_AngCorrelations() {

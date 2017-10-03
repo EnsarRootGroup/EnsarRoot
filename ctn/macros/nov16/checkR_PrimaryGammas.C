@@ -1,17 +1,17 @@
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to checkResults of the Petals & HPGE					////
-////		for primary gammas, imposing motherID=-1					////
-////																	////
-////		Usage:														////
-////			1st: select the root file & the ranges (OPTIONAL)		////
-////			2nd: root -l checkR_PrimaryGammas.C						////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to checkResults of the Petals & HPGE					
+////		for primary gammas, imposing motherID=-1					
+////																	
+////		Usage:														
+////			1st: select the root file & the ranges (OPTIONAL)		
+////			2nd: root -l checkR_PrimaryGammas.C						
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 //NOTE: if you want to analyze the HPGePoint & CrystalPoint

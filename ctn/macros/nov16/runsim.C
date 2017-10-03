@@ -45,6 +45,7 @@ void runsim() {
   //TString fGene="Cocascade";
   //TString fGene="Gamma_AngularC_200k";
 
+
   //-------------------------------------------------
   // Secondaries  generation (G4 only)
   // R3B Spec. PhysicList |     fUserPList (Bool_t)
@@ -70,7 +71,8 @@ void runsim() {
    //- N# of Sim. Events   |    nEvents     (Int_t)
    //-------------------------------------------------
 
-   Int_t nEvents = 10000;
+   Int_t nEvents = 100;
+
 
    //-------------------------------------------------
    //- EventDisplay        |    fEventDisplay (Bool_t)

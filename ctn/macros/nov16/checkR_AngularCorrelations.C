@@ -1,34 +1,34 @@
 ////////////////////////////////////////////////////////////////////////////////////
-////																			////
-////		--- Simulation of the Lisbon Nov-2016 setup ---						////
-////																			////
-////		Macro to check Angular Correlations between primary gammas			////
-////		applying the HPGe condition (see note1)								////
-////																			////
-////		Usage:																////
-////			1st: select the root file path & change the ranges (OPTIONAL)	////
-////			2nd: root -l checkR_AngularCorrelations.C						////
-////																			////
-////		Calculate: 															////
-////			-MCTrack: angle between Primary Gammas							////
-////																			////
-////			-Calo: petals Hit energy										////
-////																			////
-////			 Applying the HPGe condition:									////
-////				·petals Hit energy											////
-////				·Hit energy of petal at 90º & 180º w.r.t.HPGe				////
-////				·theta & phi angles 										////
-////				·multiplicity												////
-////				·Theta vs Energy Petals, Phi vs Energy Petals				////
-////				·Theta vs Phi												////
-////				·angle between gammas 										////
-////				·angle between gammas vs Energy								////
-////																			////
-////			-Save the histograms in a root file-> Histograms.root			////
-////																			////
-//// **elisabet.galiana@usc.es													////
-//// ** Universidad de Santiago de Compostela									////
-//// ** Dpto. Física de Partículas 												////
+////																			
+////		--- Simulation of the Lisbon Nov-2016 setup ---						
+////																			
+////		Macro to check Angular Correlations between primary gammas			
+////		applying the HPGe condition (see note1)								
+////																			
+////		Usage:																
+////			1st: select the root file path & change the ranges (OPTIONAL)	
+////			2nd: root -l checkR_AngularCorrelations.C						
+////																			
+////		Calculate: 															
+////			-MCTrack: angle between Primary Gammas							
+////																			
+////			-Calo: petals Hit energy										
+////																			
+////			 Applying the HPGe condition:									
+////				·petals Hit energy											
+////				·Hit energy of petal at 90º & 180º w.r.t.HPGe				
+////				·theta & phi angles 										
+////				·multiplicity												
+////				·Theta vs Energy Petals, Phi vs Energy Petals				
+////				·Theta vs Phi												
+////				·angle between gammas 										
+////				·angle between gammas vs Energy								
+////																			
+////			-Save the histograms in a root file-> Histograms.root			
+////																			
+//// **elisabet.galiana@usc.es													
+//// ** Universidad de Santiago de Compostela									
+//// ** Dpto. Física de Partículas 												
 ////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -62,6 +62,7 @@ void checkR_AngularCorrelations() {
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_W.root"; 
 	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_iso.root"; 
 	char inputFile[250] = "outsim.root";                                           
+
 	TFile *file1 = TFile::Open(inputFile);
 
 	//READING TREE
@@ -146,6 +147,7 @@ void checkR_AngularCorrelations() {
     Double_t energyGe = 0.0;
     Double_t limit1 = 0.0, limit2=0.0;
     TVector3 momentum;
+    
     
     //lower and upper limits Si-12900 cascade Generator
     limit1=1.779 - 0.01*1.779;//-1% of gamma energy=1.779
@@ -405,7 +407,7 @@ void checkR_AngularCorrelations() {
 	
 	}
 	// END LOOP IN THE EVENTS---------------------------------------------------------
-	
+
 	//Save Histograms in a file
 	TFile* Histos=new TFile("Histosgrams.root","recreate");
 	h3->Write();
@@ -425,7 +427,8 @@ void checkR_AngularCorrelations() {
 	h9_Cal_90->Write();
 	h9_Cal_180->Write();
 	Histos->Close();
-
+	
+	
 	// HISTOGRAMS--------------------------------------------------------------------- 
 	
 	//HPGe-------------

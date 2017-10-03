@@ -1,22 +1,22 @@
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to analyze Crystal angles Petals						////
-////			theta&phi angles for each CryId							////
-////																	////
-////		Usage:														////
-////			1st: select the root file & the ranges (OPTIONAL)		////
-////			2nd: root -l checkR_CryId_angles.C						////
-////																	////
-////		Calculate: 													////
-////			-Crystal: ID, Theta, Phi and 							////
-////					there are some func(utilities.C) to calculate	////
-////					Mean, Leftedge, Center of the Histos 			////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to analyze Crystal angles Petals						
+////			theta&phi angles for each CryId							
+////																	
+////		Usage:														
+////			1st: select the root file & the ranges (OPTIONAL)		
+////			2nd: root -l checkR_CryId_angles.C						
+////																	
+////		Calculate: 													
+////			-Crystal: ID, Theta, Phi and 							
+////					there are some func(utilities.C) to calculate	
+////					Mean, Leftedge, Center of the Histos 			
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 //NOTE1: if you want to analyze the CrystalPoint

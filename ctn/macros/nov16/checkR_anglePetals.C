@@ -1,23 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to checkResults in Petals								////
-////																	////
-////		Usage:														////
-////			1st: select the root file path & change the settings	////
-////			2nd: root -l checkR_anglePetals.C						////
-////																	////
-////		Calculate: 													////
-////			-Crystal: ID, Type, Copy, multiplicity, energy,			////
-////					primary tracks				 					////
-////			-Calo: energy, angles, multiplicity	and the				////
-////			 	angle between primary photons applying 				////
-////				a cut in the MCTrack angle (10º)					////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to checkResults in Petals								
+////																	
+////		Usage:														
+////			1st: select the root file path & change the settings	
+////			2nd: root -l checkR_anglePetals.C						
+////																	
+////		Calculate: 													
+////			-Crystal: ID, Type, Copy, multiplicity, energy,			
+////					primary tracks				 					
+////			-Calo: energy, angles, multiplicity	and the				
+////			 	angle between primary photons applying 				
+////				a cut in the MCTrack angle (10º)					
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 void checkR_anglePetals() {

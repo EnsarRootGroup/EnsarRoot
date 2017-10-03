@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////
-////																	////
-////		--- Simulation of the Lisbon Nov-2016 setup ---				////
-////																	////
-////		Macro to checkResults in MCTrack & Petals					////
-////																	////
-////		Usage:														////
-////			1st: select the root file & the ranges (OPTIONAL)		////
-////			2nd: root -l checkR_PrimaryGammas_Crystal.C				////
-////																	////
-////		Calculate: 													////
-////			-MCTrack: angles theta&phi of each crystal				////
-////			-Crystal: Primary Gammas Hits in each Crystal			////
-////																	////
-//// **elisabet.galiana@usc.es											////
-//// ** Universidad de Santiago de Compostela							////
-//// ** Dpto. Física de Partículas 										////
+////																	
+////		--- Simulation of the Lisbon Nov-2016 setup ---				
+////																	
+////		Macro to checkResults in MCTrack & Petals					
+////																	
+////		Usage:														
+////			1st: select the root file & the ranges (OPTIONAL)		
+////			2nd: root -l checkR_PrimaryGammas_Crystal.C				
+////																	
+////		Calculate: 													
+////			-MCTrack: angles theta&phi of each crystal				
+////			-Crystal: Primary Gammas Hits in each Crystal			
+////																	
+//// **elisabet.galiana@usc.es											
+//// ** Universidad de Santiago de Compostela							
+//// ** Dpto. Física de Partículas 										
 ////////////////////////////////////////////////////////////////////////////
 
 //NOTE1: if you want to analyze the CrystalPoint

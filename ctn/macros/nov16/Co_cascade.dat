@@ -13,7 +13,8 @@ Energy of gamma emmited in the transition
 Branching Ratios
 1
 Angular correlations coefficients (A2 and A4)
-0.125	        0.0417
+0.125	        0.0416
+
 
 //It works with ensargen/EnsarCascadeGen.h & EnsarCascadeGen.cxx
 //

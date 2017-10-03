@@ -1,30 +1,30 @@
 ////////////////////////////////////////////////////////////////////////////////////
-////																			////
-////		--- Simulation of the Lisbon Nov-2016 setup ---						////
-////																			////
-////		Macro to checkResults of the HPGe & Petals							////
-////																			////
-////		It analyzes the MCTracks of the primary and secondary particles		////
-////		and the detector responses: the HPGe detector and the two Petals	////
-////		which have three branches of information: Point, Crystal and Calo	////
-////																			////
-////		Usage:																////
-////			1st: select the root file & change the ranges (OPTIONAL)		////
-////			2nd: root -l checkR_HPGe_and_Petals.C							////
-////																			////
-////		Calculate:															////
-////			-MCTrack: Primary and Secondary PDG Code,						////
-////			 		  energy, theta&phi angles of Primary Particles			////
-////			-HPGe: energy, Collides 1D & 2D & 3D, theta angle				////
-////			-Crystal: ID, Type, Copy, energy								////
-////			-Calo: energy, theta&phi angles									////
-////			-Point: Collides 2D & 3D										////
-////			-Both detectors: Collides 3D									////
-////																			////
-////																			////
-//// **elisabet.galiana@usc.es													////
-//// ** Universidad de Santiago de Compostela									////
-//// ** Dpto. Física de Partículas 												////
+////																			
+////		--- Simulation of the Lisbon Nov-2016 setup ---						
+////																			
+////		Macro to checkResults of the HPGe & Petals							
+////																			
+////		It analyzes the MCTracks of the primary and secondary particles		
+////		and the detector responses: the HPGe detector and the two Petals	
+////		which have three branches of information: Point, Crystal and Calo	
+////																			
+////		Usage:																
+////			1st: select the root file & change the ranges (OPTIONAL)		
+////			2nd: root -l checkR_HPGe_and_Petals.C							
+////																			
+////		Calculate:															
+////			-MCTrack: Primary and Secondary PDG Code,						
+////			 		  energy, theta&phi angles of Primary Particles			
+////			-HPGe: energy, Collides 1D & 2D & 3D, theta angle				
+////			-Crystal: ID, Type, Copy, energy								
+////			-Calo: energy, theta&phi angles									
+////			-Point: Collides 2D & 3D										
+////			-Both detectors: Collides 3D									
+////																			
+////																			
+//// **elisabet.galiana@usc.es													
+//// ** Universidad de Santiago de Compostela									
+//// ** Dpto. Física de Partículas 												
 ////////////////////////////////////////////////////////////////////////////////////
 
 //NOTE1: if you want to analyze the HPGePoint & CrystalPoint
@@ -144,8 +144,7 @@ void checkR_HPGe_and_Petals() {
 
 	//TREE ENTRIES--------------------------------------------------------------------
 	Long64_t nevents = tree->GetEntries();
-        Int_t con=0; // con,conP son dos contadores se pueden eliminar
-        Int_t conP=0;
+
         
 	//LOOP IN THE EVENTS--------------------------------------------------------------
 	for(int i=0;i<nevents;i++){
