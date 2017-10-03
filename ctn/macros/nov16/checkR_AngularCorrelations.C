@@ -57,11 +57,7 @@ void checkR_AngularCorrelations() {
 	gStyle->SetOptFit(0);
 
 	//INPUT FILE 
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_W.root";  			//change the root file
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_Co_iso.root";  
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_W.root"; 
-	//char inputFile[250] = "/mnt/scratch/eli/outsim_Cascade_iso.root"; 
-	char inputFile[250] = "outsim.root";                                           
+	char inputFile[250] = "outsim.root";//change the root file                        
 
 	TFile *file1 = TFile::Open(inputFile);
 
@@ -91,11 +87,11 @@ void checkR_AngularCorrelations() {
 	TH2F* h_alpha_egy = new TH2F("h_alpha_egy","Alpha vs Energy", 2000,0.,3.6,2000,0,12.);
 
 	//----   MCTrack (input)   -------------------------------------------------------
-	/*TClonesArray* MCTrackCA;
+	TClonesArray* MCTrackCA;
 	EnsarMCTrack** track;
 	MCTrackCA = new TClonesArray("EnsarMCTrack",5);
 	TBranch *branchMCTrack = tree ->GetBranch("MCTrack");
-	branchMCTrack->SetAddress(&MCTrackCA);*/
+	branchMCTrack->SetAddress(&MCTrackCA);
 	
 	//----- HPGe detector--------------//
 
@@ -149,7 +145,7 @@ void checkR_AngularCorrelations() {
     TVector3 momentum;
     
     
-    //lower and upper limits Si-12900 cascade Generator
+    //lower and upper limits Si-12900 cascade Generator    		change these limits 
     limit1=1.779 - 0.01*1.779;//-1% of gamma energy=1.779
     limit2=1.779 + 0.01*1.779;//+1%
     
@@ -168,20 +164,20 @@ void checkR_AngularCorrelations() {
 		energyGe = 0.;
 		tree->GetEvent(i);
 
-		//MCtracksPerEvent     = MCTrackCA->GetEntries();
+		MCtracksPerEvent     = MCTrackCA->GetEntries();
 		hpgeHitsPerEvent     = hpgeHitCA->GetEntries();
 		//hpgePointsPerEvent   = hpgePointCA->GetEntries();
 		crystalHitsPerEvent  = crystalHitCA->GetEntries();
 		caloHitsPerEvent     = caloHitCA->GetEntries();
 		//crystalPointPerEvent = crystalPointCA->GetEntries();
 
-		/*if(MCtracksPerEvent>0) {
+		if(MCtracksPerEvent>0) {
 			track = new EnsarMCTrack*[MCtracksPerEvent];
 			for(Int_t j=0;j<MCtracksPerEvent;j++){
 				track[j] = new EnsarMCTrack;
 				track[j] = (EnsarMCTrack*) MCTrackCA->At(j);
 			}
-		}*/
+		}
 		if(hpgeHitsPerEvent>0) {
 			hpgeHit = new EnsarHPGeDetHit*[hpgeHitsPerEvent];
 			for(Int_t j=0;j<hpgeHitsPerEvent;j++){
@@ -223,7 +219,7 @@ void checkR_AngularCorrelations() {
     	Double_t Phi1_MC=0., Phi2_MC=0.;
     	Double_t E1_MC=0., E2_MC=0.;
     	
-		/*for(Int_t h=0;h<MCtracksPerEvent;h++){
+		for(Int_t h=0;h<MCtracksPerEvent;h++){
 			
 			if(track[h]->GetMotherId()<0) { //Primary Particle is MotherId=-1
 			
@@ -263,7 +259,7 @@ void checkR_AngularCorrelations() {
 		
 			cos_alpha_MC = (px1_MC*px2_MC + py1_MC*py2_MC + pz1_MC*pz2_MC)/(M1_MC*M2_MC); 
 			alpha_MC = TMath::ACos( cos_alpha_MC );
-			h_alpha_MC->Fill(alpha_MC,1/TMath::Sin(alpha_MC));*/
+			h_alpha_MC->Fill(alpha_MC,1/TMath::Sin(alpha_MC));
         
         
         
@@ -336,13 +332,6 @@ void checkR_AngularCorrelations() {
 					h6_Cal->Fill(Theta2,E2);
 					h7_Cal->Fill(Phi2,E2);
 					
-					/*if (Theta2<0.15){  //Theta2<0.15 rad (0.3)
-						h8_Cal_90->Fill(caloHit[i]->GetEnergy()*1000); //Petal around 90º
-					}
-					if (Theta2>1.35 && Theta2<1.65){ //Theta2>1.35 && Theta2<1.65 rad (0.3)
-						h8_Cal_180->Fill(caloHit[i]->GetEnergy()*1000); //Petal around 180º
-					}*/
-					
 					
 					//LOOP in Crystal Hits----------------    
 		     		for(Int_t j=0;j<crystalHitsPerEvent;j++){
@@ -366,37 +355,37 @@ void checkR_AngularCorrelations() {
 					}
 				
 			
-			Double_t alpha=0.; //angle between two primary gammas	Prod Escalar
-			if (caloHitsPerEvent>0){
-				Double_t m1=0., m2=0.;
-				Double_t M1=0., M2=0.;
-				Double_t cos_alpha=0.;
+					Double_t alpha=0.; //angle between two primary gammas	Prod Escalar
+					if (caloHitsPerEvent>0){
+						Double_t m1=0., m2=0.;
+						Double_t M1=0., M2=0.;
+						Double_t cos_alpha=0.;
 				
 				
-				m1 = pow(px1,2) + pow(py1,2) + pow(pz1,2);
-				M1 = sqrt(m1);
+						m1 = pow(px1,2) + pow(py1,2) + pow(pz1,2);
+						M1 = sqrt(m1);
 				
-				m2 = pow(px2,2) + pow(py2,2) + pow(pz2,2);
-				M2 = sqrt(m2);
+						m2 = pow(px2,2) + pow(py2,2) + pow(pz2,2);
+						M2 = sqrt(m2);
 		
-				cos_alpha = (px1*px2 + py1*py2 + pz1*pz2)/(M1*M2); 
-				alpha = TMath::ACos( cos_alpha );
-				h_alpha_W->Fill(alpha);
+						cos_alpha = (px1*px2 + py1*py2 + pz1*pz2)/(M1*M2); 
+						alpha = TMath::ACos( cos_alpha );
+						h_alpha_W->Fill(alpha);
 			
-				//cout<<"Gamma1= "<<px1<<", "<<py1<<", "<<pz1<<endl;
-				//cout<<"Gamma2= "<<px2<<", "<<py2<<", "<<pz2<<endl;
-				//cout<<"Alpha= "<<alpha<<endl;	
-			}
+						//cout<<"Gamma1= "<<px1<<", "<<py1<<", "<<pz1<<endl;
+						//cout<<"Gamma2= "<<px2<<", "<<py2<<", "<<pz2<<endl;
+						//cout<<"Alpha= "<<alpha<<endl;	
+					}
 				
-			for(Int_t i=0;i<caloHitsPerEvent;i++){
-				h_alpha_egy->Fill(alpha,caloHit[i]->GetEnergy()*1000);
-			}
+					for(Int_t i=0;i<caloHitsPerEvent;i++){
+						h_alpha_egy->Fill(alpha,caloHit[i]->GetEnergy()*1000);
+					}
 			
          }
 	 	}
 		
 
-		//if(MCtracksPerEvent)     delete[] track;
+		if(MCtracksPerEvent)     delete[] track;
 		if(hpgeHitsPerEvent)     delete[] hpgeHit;
 		//if(hpgePointsPerEvent)   delete[] hpgePoint;
 		if(crystalHitsPerEvent)  delete[] crystalHit;
@@ -470,26 +459,20 @@ void checkR_AngularCorrelations() {
 	h4_Cal->GetXaxis()->SetTitle("Phi (rad)");
 	h4_Cal->GetYaxis()->SetTitle("Counts");
 	
-	/*c13->cd(3);       
-	h_alpha_W->Draw();
-	h_alpha_W->SetLineColor(4);
-	h_alpha_W->GetXaxis()->SetTitle("Detectors Alpha angle (rad)");
-	h_alpha_W->GetYaxis()->SetTitle("Counts");
-	
-	c13->cd(4);          
+	c13->cd(3);          
 	h_alpha_egy->Draw("colz");
 	h_alpha_egy->SetLineColor(4);
 	h_alpha_egy->GetXaxis()->SetTitle("Detectors Alpha angle (rad)");
-	h_alpha_egy->GetYaxis()->SetTitle("Energy (MeV)");*/
+	h_alpha_egy->GetYaxis()->SetTitle("Energy (MeV)");
 	
-	/*c13->cd(4); 
+	c13->cd(4); 
 	h_alpha_MC->Draw();
 	h_alpha_MC->SetLineColor(3);
 	h_alpha_MC->GetXaxis()->SetTitle("MCTrack Alpha angle (rad)");
-	h_alpha_MC->GetYaxis()->SetTitle("Counts");*/
+	h_alpha_MC->GetYaxis()->SetTitle("Counts");
+	//------------------
 	
-	
-	
+
 	TCanvas* c14 = new TCanvas("Energy Petals","Energy Petals",0,0,400,800);          
 	c14->SetFillColor(0);       
 	c14->SetFrameFillColor(0);  
@@ -506,16 +489,18 @@ void checkR_AngularCorrelations() {
 	h1_Cal_2->SetLineColor(4);
 	h1_Cal_2->GetXaxis()->SetTitle("Hit Energy with Ge Condition (MeV)");
 	h1_Cal_2->GetYaxis()->SetTitle("Counts");
+	//------------------
 	
 	
-	
-	/*TCanvas* c15 = new TCanvas("Hits Multiplicity","Hits Multiplicity",0,0,400,800);          
-	c15->SetFillColor(0);       
-	c15->SetFrameFillColor(0);           
+	TCanvas* c3 = new TCanvas("Hits Multiplicity","Hits Multiplicity",0,0,400,800);          
+	c3->SetFillColor(0);       
+	c3->SetFrameFillColor(0);           
 	h5_Cal->Draw();
 	h5_Cal->SetLineColor(7);
 	h5_Cal->GetXaxis()->SetTitle("Hits Multiplicity");
-	h5_Cal->GetYaxis()->SetTitle("Counts");*/
+	h5_Cal->GetYaxis()->SetTitle("Counts");
+	//------------------
+	
 	
 	TCanvas* c15 = new TCanvas("Recontructed Angle","Recontructed Angle",0,0,400,800);          
 	c15->SetFillColor(0);       
@@ -523,8 +508,8 @@ void checkR_AngularCorrelations() {
 	h_alpha_W->Draw();
 	h_alpha_W->SetLineColor(7);
 	h_alpha_W->GetXaxis()->SetTitle("Recontructed Angle (rad)");
-	h_alpha_W->GetYaxis()->SetTitle("Counts");
-	
+	h_alpha_W->GetYaxis()->SetTitle("Counts");	
+	//------------------
 	
 	
 	TCanvas* c16 = new TCanvas("Energy","Energy of Petals",0,0,400,800);          
@@ -553,7 +538,7 @@ void checkR_AngularCorrelations() {
 	h7_Cal->Draw("colz"); 
 	h7_Cal->GetXaxis()->SetTitle("Phi");
 	h7_Cal->GetYaxis()->SetTitle("Energy Hit (MeV)");
-	
+	//------------------
 	
 	
 	TCanvas* c17 = new TCanvas("Energy angles cuts","Energy of Petals with angles cuts",0,0,400,800);          
@@ -582,7 +567,7 @@ void checkR_AngularCorrelations() {
 	h9_Cal_180->Draw("colz"); 
 	h9_Cal_180->GetXaxis()->SetTitle("Theta (rad)");
 	h9_Cal_180->GetYaxis()->SetTitle("Phi (rad)");
-	
+	//------------------
 	
 	
 	TCanvas* c18 = new TCanvas("Theta vs Phi","Theta vs Phi",0,0,400,800);          
@@ -591,7 +576,7 @@ void checkR_AngularCorrelations() {
 	h9_Cal->Draw("colz"); 
 	h9_Cal->GetXaxis()->SetTitle("Theta (rad)");
 	h9_Cal->GetYaxis()->SetTitle("Phi (rad)");
-	
+	//------------------
 	
 	TCanvas* c19 = new TCanvas("Energy of both Petals","Energy of both Petals",0,0,400,800);          
 	c16->SetFillColor(0);       

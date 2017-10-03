@@ -4,13 +4,13 @@
 ////																										
 ////							--- Simulation of the Lisbon Nov-2016 setup ---								
 ////																										
-////		This Macro analyze the Crystal Response of the Petals with ERRORS.				 				
+////		This Macro analyze the Crystal Response of the Petals.				 				
 ////																										
-////		It study the ratio of an isotropic and a correlated distribution in simulation					
-////		and the polar angle (theta) for each Crystal.													
+////		It study the ratio of a correlated  and an isotropic distribution of gammas in simulation					
+////		versus the polar angle (theta) for each Crystal.													
 ////		The Crystals could be identified by their CrystalId:											
-////				-Petal at 90º w.r.t.HPGe: CryId from 1 to 64											
-////				-Petal at 180º w.r.t.HPGe: CryId from 65 to 128											
+////				-Petal at 180º w.r.t.HPGe: CryId from 1 to 64											
+////				-Petal at 90º w.r.t.HPGe: CryId from 65 to 128											
 ////		Then, it calculates the Normalized theoretical angular correlations function					
 ////		to check the agreement between them.															
 ////																										
@@ -45,7 +45,7 @@
 	//OPEN & READ DATA FILES ------------------------------------
 	
 	//FILE 1 CrystalId and Theta angle
-	ifstream *File1 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/ENSARRoot/EnsarRoot_source/ctn/macros/nov16/CrystalId_Theta.dat");
+	ifstream *File1 = new ifstream(".../ENSARRoot/EnsarRoot_source/ctn/macros/nov16/CrystalId_Theta.dat");//change data file path
 
 	const Int_t nLevel=128;
 	Double_t CryId[nLevel];
@@ -64,7 +64,7 @@
     //fclose(File1);
     
     //FILE 2 Number of gammas have been arrived to each Crystal -> Isotropic distribution
-	ifstream *File2 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/ENSARRoot/EnsarRoot_source/ctn/macros/nov16/NumGammas_Cry_isotropic.dat");
+	ifstream *File2 = new ifstream(".../ENSARRoot/EnsarRoot_source/ctn/macros/nov16/NumGammas_Cry_isotropic.dat");//change data file path
 
 	Double_t CryId2[nLevel];
 	Double_t Gammas_iso[nLevel];
@@ -80,7 +80,7 @@
     }
     
     //FILE 3 Number of gammas have been arrived to each Crystal -> Angular Correlated distribution
-	ifstream *File3 = new ifstream("/home/fpddv1/elisabet.galiana/Escritorio/ENSARRoot/EnsarRoot_source/ctn/macros/nov16/NumGammas_Cry_AngularC.dat");
+	ifstream *File3 = new ifstream(".../ENSARRoot/EnsarRoot_source/ctn/macros/nov16/NumGammas_Cry_AngularC.dat");//change data file path
 
 	Double_t CryId3[nLevel];
 	Double_t Gammas_W[nLevel];
@@ -141,7 +141,7 @@
     
    //FUNCTION ---------------------------------------------------------------------------------------------------------------
    //The Theoretical Angular Correlations function is		W=1+A2cos^2(theta)+A4cos^4(theta)
-   // 														where the A2, A4 Angular Correlation coefficients depends on 
+   // 														where the A2, A4 Angular Correlations coefficients depend on 
    // 														the spin-parity of the transition in the gamma cascade
    
    //Normalized theoretical angular correlations function
@@ -149,11 +149,6 @@
    fa1->SetParameter(0, 0.95); //change 	this parameter represents the A2,A4 Angular Correlations coefficients
    fa1->SetParameter(1, 1.5);  //change		normalization parameter
    
-   //Integral of the theoretical angular correlations function (not used)
-   TF1 *fa2 = new TF1("fa2","(7/8)*[0]*x +([0]*TMath::Sin(4*x))/32+[0]*TMath::Sin(x)*TMath::Cos(x)+x",0,2.15);
-   fa2->SetParameter(0, 0.95);
-   //fa2->Draw("");
-  
     
    //CHANGE THETA UNITS grad->rad 
    Double_t Theta_rad[nLevel];
@@ -180,20 +175,6 @@
    gr->GetYaxis()->SetTitle("Counts Gamma_W/Gamma_iso");
    
    //CANVAS
-   /*TCanvas *c1 = new TCanvas("c1","A Simple",200,10,700,500);
-   c1->SetFillColor(0);       
-   c1->SetFrameFillColor(0); 
-   c1->Divide(1,2); 
-
-   c1->cd(1); 
-   fa2->Draw();
-   fa2->GetXaxis()->SetTitle("Theta (rad)");
-   fa2->GetYaxis()->SetTitle("Integral of W(theta)");
-   
-   c1->cd(2); 
-   gr->Draw("A*");
-   fa1->Draw("same");*/
-   
    TCanvas *c1 = new TCanvas("c1","A Simple",200,10,700,500);
    c1->SetFillColor(0);       
    c1->SetFrameFillColor(0); 
