@@ -16,7 +16,7 @@
 #include "FairRunAna.h"
 #include "FairRuntimeDb.h"
 #include "FairLogger.h"
-
+#include <stdint.h>
 #include <iomanip>
 
 //Califa headers
@@ -24,12 +24,11 @@
 #include "R3BCaloUnpack.h"
 
 
-
 //------------------------
 /**
  * Constructor
  */
-R3BCaloUnpack::R3BCaloUnpack(char *strCalDir,
+R3BCaloUnpack::R3BCaloUnpack(const char *strCalDir,
                              Short_t type, Short_t subType,
                              Short_t procId,
                              Short_t subCrate, Short_t control)
@@ -38,6 +37,7 @@ R3BCaloUnpack::R3BCaloUnpack(char *strCalDir,
     fNHits(0),fCaloUnpackPar(0), nEvents(0)
 {
    LOG(DEBUG2) << "R3BCaloUnpack::ctor()" << FairLogger::endl;
+   LOG(INFO) << type <<", "<<subType  <<", "<<procId<<", "<<subCrate <<", "<<control << FairLogger::endl;
 }
 
 
@@ -129,13 +129,17 @@ Bool_t R3BCaloUnpack::DoUnpack(Int_t *data, Int_t size) {
     
   ULong64_t rabbit0, rabbit1, rabbit2, rabbit3, rabbit4;
   ULong64_t check0, check1, check2, check3;
- 
-  l_s++; // skip first module id (should be 0x0300)
-  check0 = ( data[l_s] >> 16 ) & 0xffff;  rabbit1 =  data[l_s++] & 0xffff;
-  check1 = ( data[l_s] >> 16 ) & 0xffff;  rabbit2 =  data[l_s++] & 0xffff;
-  check1 = ( data[l_s] >> 16 ) & 0xffff;  rabbit3 =  data[l_s++] & 0xffff;
-  check1 = ( data[l_s] >> 16 ) & 0xffff;  rabbit4 =  data[l_s++] & 0xffff;
-  
+  uint16_t CALIFA_SYSTEM_ID=0x400;
+  while(data[l_s]==CALIFA_SYSTEM_ID)
+    {
+      LOG(DEBUG4)<<"system id="<<data[l_s]<< "\n";
+      l_s++; // skip first module id (should be 0x0300)
+      //      LOG(DEBUG4)<<"WRDATA" << data[l_s] << data[l_s+1] << data[l_s+2] << data[l_s+3]<< "\n";
+      check0 = ( data[l_s] >> 16 ) & 0xffff;  rabbit1 =  data[l_s++] & 0xffff;
+      check1 = ( data[l_s] >> 16 ) & 0xffff;  rabbit2 =  data[l_s++] & 0xffff;
+      check1 = ( data[l_s] >> 16 ) & 0xffff;  rabbit3 =  data[l_s++] & 0xffff;
+      check1 = ( data[l_s] >> 16 ) & 0xffff;  rabbit4 =  data[l_s++] & 0xffff;
+    }
   ULong64_t rabbitStamp = (rabbit4 << 48) | (rabbit3 << 32) | ( rabbit2 << 16 ) | rabbit1; 
  /* LOG(DEBUG) << "-------- EVENT ----------" << FairLogger::endl;
   LOG(DEBUG) << "whiteRabbit:" << rabbitStamp << FairLogger::endl;
@@ -180,10 +184,10 @@ Bool_t R3BCaloUnpack::DoUnpack(Int_t *data, Int_t size) {
 //      << "       data_size " << data_size << FairLogger::endl;
 
     
-    if(header_size != 0x34) {
-      LOG(WARNING) << "Wrong header size ( is " << header_size << ")" << FairLogger::endl;
-      break;
-    }
+    //  if(header_size != 0x35 ) {
+    //  LOG(WARNING) << "Wrong header size ( is " << header_size << ")" << FairLogger::endl;
+    //  break;
+    //}
     
     // Data reduction: size == 0 -> no more events
     if(data_size == 0) continue;
@@ -204,24 +208,22 @@ Bool_t R3BCaloUnpack::DoUnpack(Int_t *data, Int_t size) {
     UShort_t evsize;
     UShort_t magic;                 // magic number to tell appart data format versions
     UInt_t event_id;
-    ULong_t febexTimestamp;         // timestamp from the febex. Not used
     UShort_t cfd_samples[4]; 
     UShort_t loverflow;
     UShort_t hoverflow;
-    UInt_t   overflow = 0;
     UShort_t self_triggered;
     UShort_t num_pileup = 0;
     UShort_t num_discarded;
-    Int_t energy;                   // 32 bits, to accomodate old version 16-bits unsigned and new-version 16-bit signed
     //    UShort_t reserved;
     UShort_t qpid_size;
     UShort_t magic_babe;
-    Int_t n_f;                      // again, set to 32 bits to accept both version's 
-    Int_t n_s;
     UChar_t error = 0;
     UShort_t tot;
     UShort_t tot_samples[4];
  
+    new ((*fRawData)[fNHits]) R3BCaloRawHit();
+    R3BCaloRawHit& o=*reinterpret_cast<R3BCaloRawHit*>((*fRawData)[fNHits]);
+
     start = l_s;                               // used to calc readed data vs evsize
     evsize = pl_data[l_s] & 0xffff;            // first word of the data 
     magic = (pl_data[l_s++] >> 16) & 0xffff;
@@ -231,39 +233,39 @@ Bool_t R3BCaloUnpack::DoUnpack(Int_t *data, Int_t size) {
       
       case 0xAFFE: // old version of lmd. 1 (evsize & magic) + 10 words, 44 bytes
         event_id = pl_data[l_s++];
-        febexTimestamp = pl_data[l_s++];   // not used. see whiterabbit timestamp above
-        febexTimestamp |= (ULong_t) pl_data[l_s++] << 32;
+        o.fFebexTS  = pl_data[l_s++];   // not used. see whiterabbit timestamp above
+        o.fFebexTS |= (ULong_t) pl_data[l_s++] << 32;
         cfd_samples[0] = pl_data[l_s] & 0xffff;
         cfd_samples[1] = pl_data[l_s++] >> 16;
         cfd_samples[2] = pl_data[l_s] & 0xffff;
         cfd_samples[3] = pl_data[l_s++] >> 16;
-        overflow = pl_data[l_s] & 0xffffff;
+        o.fOverflow = pl_data[l_s] & 0xffffff;
         self_triggered = (pl_data[l_s++] >> 24) & 0xff;
         num_pileup = pl_data[l_s] & 0xffff;
         num_discarded = (pl_data[l_s++] >> 16) & 0xffff;
         //energy = pl_data[l_s++] & 0xffff;
-        energy = (Int_t)((UShort_t)(pl_data[l_s++] & 0xffff));     // in Max's unpacker
+        o.fEnergy = (Int_t)((UShort_t)(pl_data[l_s++] & 0xffff));     // in Max's unpacker
         l_s++;
-        n_f = (Int_t) ((UShort_t) (pl_data[l_s] & 0xffff));
-        n_s = (Int_t) ((UShort_t) ((pl_data[l_s++] >> 16) & 0xffff));
+        o.fNf = ((UShort_t) (pl_data[l_s] & 0xffff));
+        o.fNs = ((UShort_t) ((pl_data[l_s++] >> 16) & 0xffff));
         break;
         
       case 0x115A:  // new event version: 1 (evsize & magic) + 9 words = 40 bytes
-        event_id = pl_data[l_s++];
-        febexTimestamp = pl_data[l_s++];
-        febexTimestamp |= (ULong_t)pl_data[l_s++] << 32; // not used. see whiterabbit timestamp above
+        event_id    = pl_data[l_s++];
+        o.fFebexTS  = pl_data[l_s++];
+        o.fFebexTS |= (ULong_t)pl_data[l_s++] << 32; // not used. see whiterabbit timestamp above
         cfd_samples[0] = pl_data[l_s] & 0xff;
         cfd_samples[1] = pl_data[l_s++] >> 16;
         cfd_samples[2] = pl_data[l_s] & 0xff;
         cfd_samples[3] = pl_data[l_s++] >> 16;
-        overflow = pl_data[l_s] & 0xffffff;
+        o.fOverflow = pl_data[l_s] & 0xffffff;
         self_triggered = (pl_data[l_s++] >> 24) & 0xff;
         num_pileup = pl_data[l_s] & 0xffff;
         num_discarded = (pl_data[l_s++] >> 16) & 0xffff;
-        energy = (Short_t) ( pl_data[l_s++] & 0xffff );
+        o.fEnergy = (Short_t) ( pl_data[l_s++] & 0xffff );
         // field    not included in new version
-        n_f = (Short_t) ( pl_data[l_s] & 0xffff );
-        n_s = (Short_t) ( (pl_data[l_s++] >> 16) & 0xffff );
+        o.fNf = (Short_t) ( pl_data[l_s] & 0xffff );
+        o.fNs = (Short_t) ( (pl_data[l_s++] >> 16) & 0xffff );
         
         // checks if optional time-over-threshold payload present (recognized by 0xBEEF as first word) 
         if ( (evsize > 4 * (l_s - start))   && ( ((pl_data[l_s] >> 16) & 0xffff) == 0xBEEF) ) {
@@ -297,9 +299,9 @@ Bool_t R3BCaloUnpack::DoUnpack(Int_t *data, Int_t size) {
     // Set error flags
     // Error flag structure: [Pileup][PID][Energy][Timing]
 
-    if (overflow & 0x601)  error |= 1; //11000000001 Timing not valid
-    if (overflow & 0x63e)  error |= 1<<1; //11000111110  Energy not valid
-    if (overflow & 0x78E)  error |= 1<<2; //11110001110  PID not valid
+    if (o.fOverflow & 0x601)  error |= 1; //11000000001 Timing not valid
+    if (o.fOverflow & 0x63e)  error |= 1<<1; //11000111110  Energy not valid
+    if (o.fOverflow & 0x78E)  error |= 1<<2; //11110001110  PID not valid
     if (num_pileup)        error |= 1<<3;
     
      // Generates crystalID out of  pc, crate, board, channel
@@ -307,14 +309,10 @@ Bool_t R3BCaloUnpack::DoUnpack(Int_t *data, Int_t size) {
                         + sfp_id * (max_channel*max_card)
                         + card * max_channel
                         + channel;
-     //01-10-2014 Temporaty hack
-     //to handle 128 crystals only!!!!
-     if (crystal_id<128){
-       new ((*fRawData)[fNHits]) R3BCaloRawHit(crystal_id, energy, n_f, n_s, rabbitStamp, error, tot);
-       fNHits++;
+     o.fCrystalId=crystal_id;
 
-       LOG(DEBUG2) << "R3BCaloUnpack::DoUnpack(): New Hit: Crystal Id: " << crystal_id << ", fNHits: " << fNHits << FairLogger::endl;
-     }
+     LOG(DEBUG2) << "R3BCaloUnpack::DoUnpack(): New Hit: Crystal Id: " << crystal_id << ", fNHits: " << fNHits << FairLogger::endl;
+     fNHits++;
   
   } // while
 
