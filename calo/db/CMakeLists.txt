@@ -2,7 +2,7 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-Set(SYSTEM_INCLUDE_DIRECTORIES 
+Set(SYSTEM_INCLUDE_DIRECTORIES
 ${SYSTEM_INCLUDE_DIRECTORIES}
 ${BASE_INCLUDE_DIRECTORIES}
 )
@@ -25,7 +25,7 @@ set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 )
- 
+
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
@@ -54,13 +54,10 @@ R3BCaloPreamplifierPar.cxx
 )
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
-SET(HEADERS ${HEADERS} ${FAIRROOTPATH}/include/FairDbReader.h ${FAIRROOTPATH}/include/FairDbWriter.h)
+SET(HEADERS ${HEADERS})
 
 set(LINKDEF R3BCaloGeoLinkDef.h)
 Set(LIBRARY_NAME R3BCaloDB)
 Set(DEPENDENCIES Base FairDB)
 
 GENERATE_LIBRARY()
-
-
-

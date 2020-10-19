@@ -42,10 +42,6 @@
 #include "TGeoBoolNode.h"
 #include "TGeoCompositeShape.h"
 
-using std::cout;
-using std::cerr;
-using std::endl;
-
 // -----   Default constructor   -------------------------------------------
 NaIDetector::NaIDetector() : EnsarDetector("NaI", kTRUE, kNAI)
 {
@@ -90,8 +86,8 @@ void NaIDetector::Initialize()
 {
   FairDetector::Initialize();
 
-  LOG(INFO) << "NaIDetector: initialisation" << FairLogger::endl;
-  LOG(DEBUG) << "-I- NaIDetector: Vol (McId) def" << FairLogger::endl;
+  LOG(INFO) << "NaIDetector: initialisation";
+  LOG(DEBUG) << "-I- NaIDetector: Vol (McId) def";
 
   TGeoVolume *vol = gGeoManager->GetVolume("Target");
   vol->SetVisibility(kFALSE);
@@ -250,11 +246,9 @@ TClonesArray* NaIDetector::GetCollection(Int_t iColl) const
 void NaIDetector::Print(Option_t* option) const
 {
   Int_t nPoints = fPointCollection->GetEntriesFast();
-  LOG(INFO) << "NaI: " << nPoints << " points registered in this event"
-	    << FairLogger::endl;
+  LOG(INFO) << "NaI: " << nPoints << " points registered in this event";
   Int_t nHits = fHitCollection->GetEntriesFast();
-  LOG(INFO) << "NaI: " << nHits << " hits registered in this event."
-	    << FairLogger::endl;
+  LOG(INFO) << "NaI: " << nHits << " hits registered in this event.";
 }
 // ----------------------------------------------------------------------------
 
@@ -271,7 +265,7 @@ void NaIDetector::Reset()
 void NaIDetector::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
 {
   Int_t nEntries = cl1->GetEntriesFast();
-  LOG(INFO) << "NaI: " << nEntries << " entries to add" << FairLogger::endl;
+  LOG(INFO) << "NaI: " << nEntries << " entries to add";
   TClonesArray& clref = *cl2;
   NaIPoint* oldpoint = NULL;
   for (Int_t i=0; i<nEntries; i++) {
@@ -281,8 +275,7 @@ void NaIDetector::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
     new (clref[fPosIndex]) NaIPoint(*oldpoint);
     fPosIndex++;
   }
-  LOG(INFO) << "NaI: " << cl2->GetEntriesFast() << " merged entries"
-	    << FairLogger::endl;
+  LOG(INFO) << "NaI: " << cl2->GetEntriesFast() << " merged entries";
 }
 // ----------------------------------------------------------------------------
 
@@ -296,8 +289,7 @@ NaIPoint* NaIDetector::AddPoint(Int_t trackID, Int_t detID, Int_t volid,
   if (fVerboseLevel>1)
     LOG(INFO) << "NaI: Adding Point at (" << posIn.X() << ", " << posIn.Y()
 	      << ", " << posIn.Z() << ") cm,  detector " << detID << ", track "
-	      << trackID << ", energy loss " << eLoss*1e06 << " keV"
-	      << FairLogger::endl;
+	      << trackID << ", energy loss " << eLoss*1e06 << " keV";
   return new(clref[size]) NaIPoint(trackID, detID, volid,
 				       posIn, posOut, momIn, momOut, time, length, eLoss);
 }
@@ -314,10 +306,10 @@ NaIHit* NaIDetector::AddHit(Double_t energy, Double_t time,
   Int_t size = clref.GetEntriesFast();
   if (fVerboseLevel>1) {
     LOG(INFO) << "-I- NaI: Adding Hit in detector entering with " << einc*1e06 << " keV, depositing " << energy*1e06
-	      << " keV" << FairLogger::endl;
+	      << " keV";
     LOG(INFO) << " -I- trackid: " << trackid << " volume id: " << volid
 	      << " partrackid : " << partrackid << " type: " << pdgtype
-	      << " unique id: " << uniqueid << FairLogger::endl;
+	      << " unique id: " << uniqueid;
   }
   return new(clref[size]) NaIHit(energy, time);
 }
@@ -327,11 +319,10 @@ void NaIDetector::ConstructGeometry()
 {
   TString fileName = GetGeometryFileName();
   if(fileName.EndsWith(".root")) {
-    LOG(INFO) << "Constructing geometry from ROOT file " << fileName.Data()
-	      << FairLogger::endl;
+    LOG(INFO) << "Constructing geometry from ROOT file " << fileName.Data();
     ConstructRootGeometry();
   } else {
-    LOG(FATAL) << "Detector geometry file name is not specified" << FairLogger::endl;
+    LOG(FATAL) << "Detector geometry file name is not specified";
     exit(1);
   }
 }

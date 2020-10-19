@@ -42,13 +42,6 @@
 #include "TGeoBoolNode.h"
 #include "TGeoCompositeShape.h"
 
-
-using std::cout;
-using std::cerr;
-using std::endl;
-
-
-
 // -----   Default constructor   -------------------------------------------
 EnsarHPGeDet::EnsarHPGeDet() : EnsarDetector("EnsarHPGeDet", kTRUE, kHPGE)
 {
@@ -97,8 +90,8 @@ void EnsarHPGeDet::Initialize()
 {
   FairDetector::Initialize();
 
-  LOG(INFO) << "HPGeDetector: initialisation" << FairLogger::endl;
-  LOG(DEBUG) << "-I- HPGeDetector: Vol (McId) def" << FairLogger::endl;
+  LOG(INFO) << "HPGeDetector: initialisation";
+  LOG(DEBUG) << "-I- HPGeDetector: Vol (McId) def";
 
   TGeoVolume *vol = gGeoManager->GetVolume("CtnWorld");
   vol->SetVisibility(kFALSE);
@@ -184,7 +177,7 @@ Bool_t EnsarHPGeDet::ProcessHits(FairVolume* vol)
     //Adding Hit support
     Int_t nHits = fHitCollection->GetEntriesFast();
     Bool_t existHit = 0;
-    
+
    if (nHits==0) AddHit(fELoss, fTime, fNSteps,
 				       fEinc, fTrackID, fVolumeID,
 				       fParentTrackID, fTrackPID, fUniqueID);
@@ -269,11 +262,9 @@ TClonesArray* EnsarHPGeDet::GetCollection(Int_t iColl) const
 void EnsarHPGeDet::Print(Option_t* option) const
 {
   Int_t nPoints = fPointCollection->GetEntriesFast();
-  LOG(INFO) << "HPGe: " << nPoints << " points registered in this event"
-	    << FairLogger::endl;
+  LOG(INFO) << "HPGe: " << nPoints << " points registered in this event";
   Int_t nHits = fHitCollection->GetEntriesFast();
-  LOG(INFO) << "HPGe: " << nHits << " hits registered in this event."
-	    << FairLogger::endl;
+  LOG(INFO) << "HPGe: " << nHits << " hits registered in this event.";
 }
 // ----------------------------------------------------------------------------
 
@@ -286,7 +277,7 @@ void EnsarHPGeDet::Reset()
   fPointCollection->Clear();
   fHitCollection->Clear();
   ResetParameters();
-  
+
 }
 // ----------------------------------------------------------------------------
 
@@ -297,7 +288,7 @@ void EnsarHPGeDet::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset
 {
 
   Int_t nEntries = cl1->GetEntriesFast();
-  LOG(INFO) << "HPGe: " << nEntries << " entries to add" << FairLogger::endl;
+  LOG(INFO) << "HPGe: " << nEntries << " entries to add";
   TClonesArray& clref = *cl2;
   EnsarHPGeDetPoint* oldpoint = NULL;
   for (Int_t i=0; i<nEntries; i++) {
@@ -307,9 +298,7 @@ void EnsarHPGeDet::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset
     new (clref[fPosIndex]) EnsarHPGeDetPoint(*oldpoint);
     fPosIndex++;
   }
-  LOG(INFO) << "HPGe: " << cl2->GetEntriesFast() << " merged entries"
-	    << FairLogger::endl;
-
+  LOG(INFO) << "HPGe: " << cl2->GetEntriesFast() << " merged entries";
 }
 //-----------------------------------------------------------------------------
 
@@ -325,8 +314,7 @@ EnsarHPGeDetPoint* EnsarHPGeDet::AddPoint(Int_t trackID, Int_t detID, Int_t voli
   if (fVerboseLevel>1)
     LOG(INFO) << "HPGe: Adding Point at (" << posIn.X() << ", " << posIn.Y()
 	      << ", " << posIn.Z() << ") cm,  detector " << detID << ", track "
-	      << trackID << ", energy loss " << eLoss*1e06 << " keV"
-	      << FairLogger::endl;
+	      << trackID << ", energy loss " << eLoss*1e06 << " keV";
   return new(clref[size]) EnsarHPGeDetPoint(trackID, detID, volid,
 				       posIn, posOut, momIn, momOut, time, length, eLoss);
 }
@@ -345,10 +333,10 @@ EnsarHPGeDetHit* EnsarHPGeDet::AddHit(Double_t energy, Double_t time,
   Int_t size = clref.GetEntriesFast();
   if (fVerboseLevel>1){
    LOG(INFO) << "-I- HPGe: Adding Hit in detector entering with " << einc*1e06 << " keV, depositing " << energy*1e06
-	      << " keV" << FairLogger::endl;
+	      << " keV";
     LOG(INFO) << " -I- trackid: " << trackid << " volume id: " << volid
 	      << " partrackid : " << partrackid << " type: " << pdgtype
-	      << " unique id: " << uniqueid << FairLogger::endl;
+	      << " unique id: " << uniqueid;
   }
   return new(clref[size]) EnsarHPGeDetHit(energy, time);
 }
@@ -361,11 +349,10 @@ void EnsarHPGeDet::ConstructGeometry()
 {
   TString fileName = GetGeometryFileName();
   if(fileName.EndsWith(".root")) {
-    LOG(INFO) << "Constructing geometry from ROOT file " << fileName.Data()
-	      << FairLogger::endl;
+    LOG(INFO) << "Constructing geometry from ROOT file " << fileName.Data();
     ConstructRootGeometry();
   } else {
-    LOG(FATAL) << "Detector geometry file name is not specified" << FairLogger::endl;
+    LOG(FATAL) << "Detector geometry file name is not specified";
     exit(1);
   }
 }

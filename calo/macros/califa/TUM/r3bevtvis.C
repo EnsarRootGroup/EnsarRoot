@@ -4,7 +4,6 @@ r3bevtvis()
   gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libGeoBase");
-  gSystem->Load("libFairDB");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");
   gSystem->Load("libMCStack");

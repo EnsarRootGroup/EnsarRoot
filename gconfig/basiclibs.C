@@ -21,6 +21,5 @@ void basiclibs()
   gSystem->Load("libMinuit");
   gSystem->Load("libProof");
   gSystem->Load("libProofPlayer");
-  gSystem->Load("libFairDB");
   gSystem->Load("libFairTools");
 }  

@@ -37,11 +37,11 @@ EnsarMCStack::EnsarMCStack(Int_t size) {
   fEnergyCut        = 0.;
   fStoreMothers     = kTRUE;
   fDebug            = kFALSE;
-  TString MCName = gMC->GetName(); 
+  TString MCName = gMC->GetName();
   if (MCName.CompareTo("TGeant4") == 0 ){
-    fMC=1; 
+    fMC=1;
   }else fMC=0;
- 
+
 }
 
 // -------------------------------------------------------------------------
@@ -64,9 +64,9 @@ EnsarMCStack::~EnsarMCStack() {
  // -----   Virtual public method PushTrack   -------------------------------
 void EnsarMCStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
 			 Double_t px, Double_t py, Double_t pz,
-			 Double_t e, Double_t vx, Double_t vy, Double_t vz, 
+			 Double_t e, Double_t vx, Double_t vy, Double_t vz,
 			 Double_t time, Double_t polx, Double_t poly,
-			 Double_t polz, TMCProcess proc, Int_t& ntr, 
+			 Double_t polz, TMCProcess proc, Int_t& ntr,
 			 Double_t weight, Int_t is) {
 
 	PushTrack( toBeDone, parentId, pdgCode,
@@ -75,14 +75,14 @@ void EnsarMCStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
 				  time,  polx,  poly,
 				  polz, proc, ntr,
 				  weight, is, -1);
-} 
+}
 
 // -----   Virtual public method PushTrack   -------------------------------
 void EnsarMCStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
 			 Double_t px, Double_t py, Double_t pz,
-			 Double_t e, Double_t vx, Double_t vy, Double_t vz, 
+			 Double_t e, Double_t vx, Double_t vy, Double_t vz,
 			 Double_t time, Double_t polx, Double_t poly,
-			 Double_t polz, TMCProcess proc, Int_t& ntr, 
+			 Double_t polz, TMCProcess proc, Int_t& ntr,
 			 Double_t weight, Int_t is, Int_t secondparentID) {
 
   // --> Get TParticle array
@@ -93,10 +93,10 @@ void EnsarMCStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
-  TParticle* particle = 
-    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId, 
-					    nPoints, daughter1Id, 
-					    daughter2Id, px, py, pz, e, 
+  TParticle* particle =
+    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,
+					    nPoints, daughter1Id,
+					    daughter2Id, px, py, pz, e,
 					    vx, vy, vz, time);
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
@@ -114,7 +114,7 @@ void EnsarMCStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
 }
 // -------------------------------------------------------------------------
 
-  
+
 
 // -----   Virtual method PopNextTrack   -----------------------------------
 TParticle* EnsarMCStack::PopNextTrack(Int_t& iTrack) {
@@ -142,7 +142,7 @@ TParticle* EnsarMCStack::PopNextTrack(Int_t& iTrack) {
 }
 // -------------------------------------------------------------------------
 
-  
+
 
 // -----   Virtual method PopPrimaryForTracking   --------------------------
 TParticle* EnsarMCStack::PopPrimaryForTracking(Int_t iPrim) {
@@ -183,7 +183,7 @@ TParticle* EnsarMCStack::GetCurrentTrack() const {
 // -------------------------------------------------------------------------
 
 
-  
+
 // -----   Public method AddParticle   -------------------------------------
 void EnsarMCStack::AddParticle(TParticle* oldPart) {
   TClonesArray& array = *fParticles;
@@ -208,17 +208,17 @@ void EnsarMCStack::FillTrackArray() {
   //<DB> if no selection than no selection
   /*
   if ( fMinPoints == 0 ) {
-     
+
    for (Int_t iPart=0; iPart<fNParticles; iPart++) {
-      EnsarMCTrack* track = 
+      EnsarMCTrack* track =
 	new( (*fTracks)[fNTracks]) EnsarMCTrack(GetParticle(iPart));
       fNTracks++;
     }
-   cout << "-I- EnsarMCStack: no select. MCTracks forwarded : " << fNParticles << endl; 
+   cout << "-I- EnsarMCStack: no select. MCTracks forwarded : " << fNParticles << endl;
    return;
   }//! fMinPoints
   */
-   
+
   // --> Check tracks for selection criteria
   SelectTracks();
 
@@ -227,7 +227,7 @@ void EnsarMCStack::FillTrackArray() {
 
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end() ) {
-      cout << "-E- EnsarMCStack: Particle " << iPart 
+      cout << "-E- EnsarMCStack: Particle " << iPart
 	   << " not found in storage map!" << endl;
       Fatal("EnsarMCStack::FillTrackArray",
 	    "Particle not found in storage map.");
@@ -235,7 +235,7 @@ void EnsarMCStack::FillTrackArray() {
     Bool_t store = (*fStoreIter).second;
 
     if (store) {
-      EnsarMCTrack* track = 
+      EnsarMCTrack* track =
 	new( (*fTracks)[fNTracks]) EnsarMCTrack(GetParticle(iPart),fMC);
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
@@ -248,9 +248,9 @@ void EnsarMCStack::FillTrackArray() {
       //cout << "-I- TParticle time " << GetParticle(iPart)->T() << endl;
       //cout << "-I- MC Track time " << track->GetStartT() << endl;
 
-    
+
     }else{
-      if (fDebug) cout << "-D- EnsarMCStack IndexMap ---> -2 for iPart: " << iPart << endl;    
+      if (fDebug) cout << "-D- EnsarMCStack IndexMap ---> -2 for iPart: " << iPart << endl;
       fIndexMap[iPart] = -2;
     }
 
@@ -269,11 +269,11 @@ void EnsarMCStack::FillTrackArray() {
 
 // -----   Public method UpdateTrackIndex   --------------------------------
 void EnsarMCStack::UpdateTrackIndex(TRefArray* detList) {
-  
+
   if ( fMinPoints == 0 ) return;
   LOG(INFO) << "EnsarStack: Updating track indizes...";
   Int_t nColl = 0;
-  
+
   // First update mother ID in MCTracks
   for (Int_t i=0; i<fNTracks; i++) {
     EnsarMCTrack* track = (EnsarMCTrack*)fTracks->At(i);
@@ -281,37 +281,37 @@ void EnsarMCStack::UpdateTrackIndex(TRefArray* detList) {
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
       LOG(FATAL) << "EnsarStack: Particle index " << iMotherOld
-      << " not found in dex map! " << FairLogger::endl;
+      << " not found in dex map! ";
     }
     track->SetMotherId( (*fIndexIter).second );
   }
-  
+
   // Now iterate through all active detectors
   TIterator* detIter = detList->MakeIterator();
   detIter->Reset();
   FairDetector* det = NULL;
   while( (det = (FairDetector*)detIter->Next() ) ) {
-    
+
     // --> Get hit collections from detector
     Int_t iColl = 0;
     TClonesArray* hitArray;
     while ( (hitArray = det->GetCollection(iColl++)) ) {
       nColl++;
       Int_t nPoints = hitArray->GetEntriesFast();
-      
+
       // --> Update track index for all MCPoints in the collection
       for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
         FairMCPoint* point = (FairMCPoint*)hitArray->At(iPoint);
         Int_t iTrack = point->GetTrackID();
-        
-        LOG(DEBUG) << "EnsarMCStack TrackID Get : " << iTrack << FairLogger::endl;
-        
+
+        LOG(DEBUG) << "EnsarMCStack TrackID Get : " << iTrack;
+
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
           LOG(FATAL) << "EnsarStack: Particle index " << iTrack
-          << " not found in index map! " << FairLogger::endl;
+          << " not found in index map! ";
         }
-        LOG(DEBUG) << "EnsarMCStack TrackID Set : " << (*fIndexIter).second << FairLogger::endl;
+        LOG(DEBUG) << "EnsarMCStack TrackID Set : " << (*fIndexIter).second;
         //	if ( ((*fIndexIter).second ) < 0 ) {
         //	   point->SetTrackID(iTrack);
         //	}else{
@@ -325,16 +325,16 @@ void EnsarMCStack::UpdateTrackIndex(TRefArray* detList) {
       hitArray = det->GetCollection(2);
       nColl++;
       Int_t nPoints = hitArray->GetEntriesFast();
-      
+
       // --> Update track index for all MCPoints in the collection
       for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
         R3BCaloCrystalHitSim* point = (R3BCaloCrystalHitSim*)hitArray->At(iPoint);
         Int_t iTrack = point->GetTrackId();
-        
+
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
           LOG(FATAL) << "EnsarStack: Particle index " << iTrack
-          << " not found in index map! " << FairLogger::endl;
+          << " not found in index map! ";
         }
         //	if ( ((*fIndexIter).second ) < 0 ) {
         //	   point->SetTrackID(iTrack);
@@ -345,7 +345,7 @@ void EnsarMCStack::UpdateTrackIndex(TRefArray* detList) {
     }
   }     // List of active detectors
 
-  cout << "...stack and " << nColl << " collections updated." << endl;
+  cout << "...stack and " << nColl << " collections updated.";
 
 }
 // -------------------------------------------------------------------------
@@ -376,14 +376,14 @@ void EnsarMCStack::Register() {
 
 // -----   Public method Print  --------------------------------------------
 void EnsarMCStack::Print(Int_t iVerbose) const {
-  cout << "-I- EnsarMCStack: Number of primaries        = " 
+  cout << "-I- EnsarMCStack: Number of primaries        = "
        << fNPrimaries << endl;
-  cout << "              Total number of particles  = " 
+  cout << "              Total number of particles  = "
        << fNParticles << endl;
   cout << "              Number of tracks in output = "
        << fNTracks << endl;
   if (iVerbose) {
-    for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) 
+    for (Int_t iTrack=0; iTrack<fNTracks; iTrack++)
       ((EnsarMCTrack*) fTracks->At(iTrack))->Print(iTrack);
   }
 }
@@ -428,7 +428,7 @@ Int_t EnsarMCStack::GetCurrentParentTrackNumber() const {
 // -----   Public method GetParticle   -------------------------------------
 TParticle* EnsarMCStack::GetParticle(Int_t trackID) const {
   if (trackID < 0 || trackID >= fNParticles) {
-    cout << "-E- EnsarMCStack: Particle index " << trackID 
+    cout << "-E- EnsarMCStack: Particle index " << trackID
 	 << " out of range." << endl;
     Fatal("EnsarMCStack::GetParticle", "Index out of range");
   }

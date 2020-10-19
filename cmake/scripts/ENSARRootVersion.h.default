@@ -1,0 +1,4 @@
+#ifndef ENSARROOT_VERSION
+#define ENSARROOT_VERSION 0.0.1
+#define ENSARROOT_GIT_DATE "Sun Jan 1 00:00:00 0"
+#endif

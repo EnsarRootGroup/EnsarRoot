@@ -18,7 +18,6 @@ void sim(Int_t nEvents=1)
   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libFairTools");
-  gSystem->Load("libFairDB");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");

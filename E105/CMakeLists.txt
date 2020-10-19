@@ -2,14 +2,14 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-Set(SYSTEM_INCLUDE_DIRECTORIES 
+Set(SYSTEM_INCLUDE_DIRECTORIES
 ${SYSTEM_INCLUDE_DIRECTORIES}
 ${BASE_INCLUDE_DIRECTORIES}
 )
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
-${BASE_INCLUDE_DIRECTORIES} 
+${ROOT_INCLUDE_DIR}
+${BASE_INCLUDE_DIRECTORIES}
 #put here all directories where header files are located
 ${ENSARROOT_SOURCE_DIR}/mcstack
 ${ENSARROOT_SOURCE_DIR}/E105
@@ -26,7 +26,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
-) 
+)
 
 link_directories( ${LINK_DIRECTORIES})
 
@@ -67,7 +67,7 @@ E105Gen/E105AsciiGenerator.cxx
 # fill list of header files from list of source files
 # by exchanging the file extension
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
-SET(HEADERS ${HEADERS} ${FAIRROOTPATH}/include/FairDbReader.h ${FAIRROOTPATH}/include/FairDbWriter.h)
+SET(HEADERS ${HEADERS})
 
 set(LINKDEF EnsarE105LinkDef.h)
 set(LIBRARY_NAME E105)

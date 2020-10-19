@@ -31,24 +31,24 @@ E105AsciiGenerator::E105AsciiGenerator(const char* fileName) {
   cout << "-I- E105AsciiGenerator: Opening input file " << fileName << endl;
 
   // Open first the file to register all new ions.
-  fInputFile = new ifstream(fFileName);
-  if ( ! fInputFile->is_open() ) 
+  fInputFile = new std::ifstream(fFileName);
+  if ( ! fInputFile->is_open() )
     Fatal("E105AsciiGenerator","Cannot open input file.");
   cout << "-I- E105AsciiGenerator: Looking for ions..." << endl;
 
   Int_t nIons = RegisterIons();
-  cout << "-I- E105AsciiGenerator: " << nIons << " ions registered." 
+  cout << "-I- E105AsciiGenerator: " << nIons << " ions registered."
        << endl;
   CloseInput();
 
   // Re-Open the file for standard streaming ...
-  fInputFile = new ifstream(fFileName);
+  fInputFile = new std::ifstream(fFileName);
 
   fX=fY=fZ=0.0;
   fPointVtxIsSet=kFALSE;
   fDX=fDY=fDZ=0.0;
   fBoxVtxIsSet=kFALSE;
- 
+
 }
 // ------------------------------------------------------------------------
 
@@ -138,15 +138,15 @@ Bool_t E105AsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
       // Give track to PrimaryGenerator
       //cout << "PDG : " << pdgType << endl;
 
-      if (fPointVtxIsSet){ 
+      if (fPointVtxIsSet){
 	vx = fX;
 	vy = fY;
 	vz = fZ;
 	if (fBoxVtxIsSet) {
 	  vx = gRandom->Gaus(fX,fDX);
-	  vy = gRandom->Gaus(fY,fDY); 
-	  vz = gRandom->Gaus(fZ,fDZ); 
-	}         	
+	  vy = gRandom->Gaus(fY,fDY);
+	  vz = gRandom->Gaus(fZ,fDZ);
+	}
       }
 
       primGen->AddTrack(pdgType, px, py, pz, vx, vy, vz);
@@ -160,7 +160,7 @@ Bool_t E105AsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 void E105AsciiGenerator::CloseInput() {
   if ( fInputFile ) {
     if ( fInputFile->is_open() ) {
-       cout << "-I- E105AsciiGenerator: Closing input file " 
+       cout << "-I- E105AsciiGenerator: Closing input file "
 	    << fFileName << endl;
        fInputFile->close();
     }
@@ -227,4 +227,3 @@ Int_t E105AsciiGenerator::RegisterIons() {
 // ------------------------------------------------------------------------
 
 ClassImp(E105AsciiGenerator)
-

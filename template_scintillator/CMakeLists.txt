@@ -2,13 +2,13 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-Set(SYSTEM_INCLUDE_DIRECTORIES 
+Set(SYSTEM_INCLUDE_DIRECTORIES
 ${SYSTEM_INCLUDE_DIRECTORIES}
 ${BASE_INCLUDE_DIRECTORIES}
 )
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
+${ROOT_INCLUDE_DIR}
 ${BASE_INCLUDE_DIRECTORIES}
 #put here all directories where header files are located
 ${ENSARROOT_SOURCE_DIR}/fairtools
@@ -31,7 +31,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
-) 
+)
 
 link_directories( ${LINK_DIRECTORIES})
 
@@ -52,11 +52,13 @@ digitization/EnsarScintillatorDigitizer.cxx
 CHANGE_FILE_EXTENSION(*.cxx *.h TSCINTIDET_HEADERS "${TSCINTIDET_SRCS}")
 
 set(TSCINTIDET_LINKDEF EnsarScintillatorLinkDef.h)
-set(TSCINTIDET_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/EnsarScintillatorDict.cxx) 
+set(TSCINTIDET_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/EnsarScintillatorDict.cxx)
 
 ROOT_GENERATE_DICTIONARY("${TSCINTIDET_HEADERS}" "${TSCINTIDET_LINKDEF}" "${TSCINTIDET_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 
 set(TSCINTIDET_SRCS ${TSCINTIDET_SRCS} ${TSCINTIDET_DICTIONARY})
+
+set(DEPENDENCIES FairLogger::FairLogger)
 
 add_library(EnsarScintillator SHARED ${TSCINTIDET_SRCS})
 target_link_libraries(EnsarScintillator ${ROOT_LIBRARIES})

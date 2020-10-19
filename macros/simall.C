@@ -64,7 +64,6 @@ void simall(Int_t nEvents = 1,
   gSystem->Load("libGenVector");
 
   gSystem->Load("libGeoBase");
-  gSystem->Load("libFairDB");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");
   gSystem->Load("libMCStack");

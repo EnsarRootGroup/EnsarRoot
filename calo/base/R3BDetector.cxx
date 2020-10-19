@@ -99,8 +99,8 @@ void R3BDetector::SetRotAnglesEuler(Double_t phi, Double_t theta, Double_t psi)
     }
     else
     {
-        LOG(INFO) << "R3BDetector::SetRotAngles() is ignored ! " << FairLogger::endl;
-        LOG(INFO) << "R3BDetector::SetRotAngles Local Transf. already activated ... " << FairLogger::endl;
+        LOG(INFO) << "R3BDetector::SetRotAngles() is ignored ! ";
+        LOG(INFO) << "R3BDetector::SetRotAngles Local Transf. already activated ... ";
         fLabTrans = kFALSE;
     }
 }
@@ -120,8 +120,8 @@ void R3BDetector::SetRotAnglesXYZ(Double_t xx, Double_t yy, Double_t zz)
     }
     else
     {
-        LOG(INFO) << "R3BDetector::SetRotAnglesXYZ() is ignored ! " << FairLogger::endl;
-        LOG(INFO) << "R3BDetector::SetRotAngles Lab Transf. already activated ... " << FairLogger::endl;
+        LOG(INFO) << "R3BDetector::SetRotAnglesXYZ() is ignored ! ";
+        LOG(INFO) << "R3BDetector::SetRotAngles Lab Transf. already activated ... ";
         fLocalTrans = kFALSE;
     }
 }
@@ -215,9 +215,9 @@ TGeoCombiTrans* R3BDetector::GetGlobalPosition(TGeoCombiTrans* fRef)
         else
         {
             LOG(ERROR) << "R3BDetector::GetGlobalPosition() \
-	      No. Ref. Transformation defined ! " << FairLogger::endl;
+	      No. Ref. Transformation defined ! ";
             LOG(ERROR) << "R3BDetector::GetGlobalPosition() \
-	      cannot create Local Transformation " << FairLogger::endl;
+	      cannot create Local Transformation ";
             return NULL;
         } //! fRefRot
     }

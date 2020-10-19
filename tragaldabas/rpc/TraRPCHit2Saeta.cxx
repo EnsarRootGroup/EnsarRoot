@@ -38,7 +38,7 @@ using std::endl;
 
   TraRPCHit2Saeta::~TraRPCHit2Saeta()
 {
-  LOG(INFO) << "TraRPCHit2Saeta: Delete instance" << FairLogger::endl;
+  LOG(INFO) << "TraRPCHit2Saeta: Delete instance";
   if(fTraHitCA) { fTraHitCA->Delete(); delete fTraHitCA; }
   if(fTraSaetaCA) { fTraSaetaCA->Delete(); delete fTraSaetaCA; }
 }
@@ -57,6 +57,8 @@ using std::endl;
   // Register output array TraRPCSaeta
   fTraSaetaCA = new TClonesArray("TraRPCSaeta",1000);
   ioManager->Register("RPCSaeta", "Tragaldabas Saeta", fTraSaetaCA, kTRUE);
+
+  return kSUCCESS;
 }
 
   // -----   Public method ReInit   --------------------------------------------
@@ -66,13 +68,13 @@ using std::endl;
 }
 
   // -----   Public method Exec   --------------------------------------------
-  // Global variables: position of the planes, 1/sigma's. 
+  // Global variables: position of the planes, 1/sigma's.
 
   Double_t const length = 11.1;
   Double_t const width = 11.6;
   Double_t const sigmaT = 0.05;
   Double_t const c = 30.0; // speed of light in cm/ns
-  Double_t const percent = 0.6; // signal velocity as a percentage of c (i.e. 0.6 == 60%)  
+  Double_t const percent = 0.6; // signal velocity as a percentage of c (i.e. 0.6 == 60%)
   Double_t wx=12.0/(width*width), wy=12.0/(length*length), wt=1.0/(sigmaT*sigmaT), sv=1.0/(percent*c); // sv: signal slowness
   Double_t Z1=0.0, Z2=52.2, Z3=90.2, Z4=173.9;
 
@@ -94,7 +96,7 @@ using std::endl;
   }
 
   // ---- Create and add the desired saetas -----
-  //  Comment SN.Print() in methods to avoid individual saeta information on screen. 
+  //  Comment SN.Print() in methods to avoid individual saeta information on screen.
   //  CreateS2(1,Z1,2,Z2);
   //  CreateS2(2,0.0,3,Z3-Z2);
   //  CreateS2(3,0.0,4,Z4-Z3);
@@ -123,7 +125,7 @@ using std::endl;
   return new(clref[ArraySize]) TraRPCSaeta(Saeta, id, size);
 }
 
-  
+
   // -----  Private method ChiSquare ---------------------------------------------
   Double_t TraRPCHit2Saeta::ChiSquare(TMatrixD K, TMatrixD Dat, TMatrixD A, TMatrixD S)
 {
@@ -152,10 +154,10 @@ using std::endl;
   W[0][0] = wx;
   W[1][1] = wy;
   W[2][2] = wt;
-  
+
   // Calculate the chi-value
   Prod = STrans*K*S-2.0*STrans*A+(DatTrans*W)*Dat;
-  chi = Prod[0][0]; 
+  chi = Prod[0][0];
   return chi;
 }
 
@@ -175,7 +177,7 @@ using std::endl;
   // ----- Private method CreateARestMatrix ---------------------------------------
   // This function sets the A matrices with constraints. 4 coefficients, 5 saeta-coordinates, 4 hit coordinates (x,y,z,t)
   TMatrixD TraRPCHit2Saeta::CreateARestMatrix(Double_t b1,Double_t b2,Double_t b3,Double_t b4,
-  Double_t Sx,Double_t Sxp, Double_t Sy, Double_t Syp, Double_t Ss, 
+  Double_t Sx,Double_t Sxp, Double_t Sy, Double_t Syp, Double_t Ss,
   Double_t X, Double_t Y, Double_t Z, Double_t T)
 {
   TMatrixD AR(6,1);
@@ -304,9 +306,9 @@ using std::endl;
 
   // ----- TO BE FINISHED & CORRECTED  Private method CreateS3 ------------------------------------------------------------
   // It builds size 3 saetas using the hits produced at three generic planes denoted by id1,id2, and id3 indices
-  
+
   void TraRPCHit2Saeta::CreateS3(Int_t id1, Double_t z1, Int_t id2, Double_t z2, Int_t id3, Double_t z3)
-{ 
+{
   // Define the matrices and data
   TMatrixD K1(6,6), K2(6,6), K3(6,6), DataMatrix1(3,1), DataMatrix2(3,1),DataMatrix3(3,1);
   TMatrixD A1(6,1), A2(6,1), A3(6,1), S3(6,1);
@@ -342,7 +344,7 @@ using std::endl;
        S3.Print();
        // we add it to the array
        TraRPCSaeta* Saeta;
-       Saeta = AddSaeta(S3,id1, 3); // size = 3 
+       Saeta = AddSaeta(S3,id1, 3); // size = 3
        Saeta->SetHitsIndices(p1,p2,p3,-1);
        }
       }
@@ -411,9 +413,9 @@ using std::endl;
      }
     }
    }
-  }  
+  }
 }
- 
+
 
   // -----  Private method Drift --------------------------------------------------------------
   TMatrixD TraRPCHit2Saeta::Drift(TMatrixD Saeta4, TMatrixD Data1, TMatrixD Data2, TMatrixD Data3, TMatrixD Data4)
@@ -422,35 +424,35 @@ using std::endl;
   cout << "Signal drift applied to Saeta" << endl;
 
   Double_t b1[4]; // Data and coefficients of plane 1
-  Double_t xc1 = Data1[0][0]; 
+  Double_t xc1 = Data1[0][0];
   Double_t yc1 = Data1[1][0];
   Double_t x1  = Data1[0][0];
   Double_t y1  = Data1[1][0];
   Double_t t1  = Data1[2][0];
 
   Double_t b2[4]; // plane 2
-  Double_t xc2 = Data2[0][0]; 
+  Double_t xc2 = Data2[0][0];
   Double_t yc2 = Data2[1][0];
   Double_t x2  = Data2[0][0];
   Double_t y2  = Data2[1][0];
   Double_t t2  = Data2[2][0];
 
   Double_t b3[4]; // plane 3
-  Double_t xc3 = Data3[0][0]; 
+  Double_t xc3 = Data3[0][0];
   Double_t yc3 = Data3[1][0];
   Double_t x3  = Data3[0][0];
   Double_t y3  = Data3[1][0];
   Double_t t3  = Data3[2][0];
- 
+
   Double_t b4[4]; // plane 4
-  Double_t xc4 = Data4[0][0]; 
+  Double_t xc4 = Data4[0][0];
   Double_t yc4 = Data4[1][0];
   Double_t x4  = Data4[0][0];
   Double_t y4  = Data4[1][0];
   Double_t t4  = Data4[2][0];
 
   // We define the K and A matrices
-  TMatrixD KRest1(6,6), KRest2(6,6), KRest3(6,6), KRest4(6,6), ARest1(6,1), ARest2(6,1), ARest3(6,1), ARest4(6,1); 
+  TMatrixD KRest1(6,6), KRest2(6,6), KRest3(6,6), KRest4(6,6), ARest1(6,1), ARest2(6,1), ARest3(6,1), ARest4(6,1);
 
   for(Int_t i=0; i<100;i++){
    Double_t sx  = Saeta4[0][0];
@@ -461,10 +463,10 @@ using std::endl;
    Double_t ss  = Saeta4[5][0];
    Double_t module1=0.0, module2=0.0; // to check the convergence of the iterative process
 
-   // In order to avoid problems during the iterative process, we shift the initial Saeta 
+   // In order to avoid problems during the iterative process, we shift the initial Saeta
    // only in the first iteration
    if(i == 0) {
-    sx=sx+0.1; 
+    sx=sx+0.1;
     sy=sy+0.1;
    }
 
@@ -490,22 +492,22 @@ using std::endl;
 
    // We build the Saeta with restrictions
    Saeta4 =(KRest1+KRest2+KRest3+KRest4).Invert()*(ARest1+ARest2+ARest3+ARest4);
- 
+
    // We evaluate the module of the saeta after the iteration
    module2=TMath::Sqrt(Saeta4[0][0]*Saeta4[0][0]+Saeta4[1][0]*Saeta4[1][0]+Saeta4[2][0]*Saeta4[2][0]+Saeta4[3][0]*Saeta4[3][0]+Saeta4[4][0]*Saeta4[4][0]+Saeta4[5][0]*Saeta4[5][0]);
 
-   // If the modules satify the convergence condition we stop the iterative process  
+   // If the modules satify the convergence condition we stop the iterative process
    if (TMath::Abs(module2-module1)/module1 < 0.01){
    cout << "The convergence after " << i+1 << " iterations is reached: " << endl;
    // We add the saeta to the array
    AddSaeta(Saeta4,1, 5);
    Saeta4.Print();
    // If desired; print the reduced error matrix (uncomment the next two lines)
-   // cout << "The reduced error matrix after convergence: " << endl;  
+   // cout << "The reduced error matrix after convergence: " << endl;
    // Reduce((KRest1+KRest2+KRest3+KRest4).Invert());
-   break; 
+   break;
    }
-   
+
    // If no convergence is achieved after 100 iterations, we stop the process.
    if(i == 99) {
    cout << "No convergence achieved." << endl;
@@ -513,12 +515,12 @@ using std::endl;
    }
   }
    return Saeta4;
-  
+
 
 }
 
 
-  // -----  Private method Reduce -------------------------------------- 
+  // -----  Private method Reduce --------------------------------------
   TMatrixD TraRPCHit2Saeta::Reduce(TMatrixD B)
 {
   for(Int_t i=0; i<6; i++){B[i][i]=TMath::Sqrt(B[i][i]); }
@@ -532,13 +534,13 @@ using std::endl;
 }
 
 
-  // ----- Private method SetCoefficients ------------------------------------- 
+  // ----- Private method SetCoefficients -------------------------------------
   // calculates some numbers that are always present during the iterative method.
   // We take the components of the Saeta as an input to calculate the coefficientes. Therefore we denote them with a letter "S": Sx, Sxp, ...
   // X, Y, Z are the coordinates of the hit.
   void TraRPCHit2Saeta::SetCoefficients(Double_t Sx, Double_t Sxp, Double_t Sy, Double_t Syp, Double_t Xc, Double_t Yc, Double_t Z, Double_t *coef)
 {
-  coef[0] = TMath::Sqrt(1+Sxp*Sxp+Syp*Syp); // b1 
+  coef[0] = TMath::Sqrt(1+Sxp*Sxp+Syp*Syp); // b1
   coef[1] = TMath::Sqrt((Sx+Sxp*Z-Xc)*(Sx+Sxp*Z-Xc)+(Sy+Syp*Z-Yc)*(Sy+Syp*Z-Yc)); //b2
   coef[2] = Sx+Sxp*Z-Xc; // b3
   coef[3] = Sy+Syp*Z-Yc; // b4
@@ -546,6 +548,3 @@ using std::endl;
 }
 
 ClassImp(TraRPCHit2Saeta)
-
-
-

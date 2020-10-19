@@ -75,7 +75,7 @@ Bool_t  EnsarBoxGenerator::Init()
     // printf("particle->Mass() = %f \n", fPDGMass);
     return kTRUE;
   }
-
+  return kTRUE;
 }
 
 // ------------------------------------------------------------------------
@@ -142,7 +142,7 @@ Bool_t EnsarBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     Double32_t gamma = TMath::Sqrt(1-beta*beta);
     Double32_t momentum=TMath::Sqrt(px*px+py*py+pz*pz);
     pz = (pz + beta * momentum) / gamma;
-    
+
     primGen->AddTrack(fPDGType, px, py, pz, fX, fY, fZ);
   }
   return kTRUE;

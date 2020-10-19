@@ -50,7 +50,7 @@ void R3BCaloRawAna::Exec(Option_t *option)
     tht->Fill(hit->GetWRTS());
   }
   if(0 == (fnEvents%100) && false) {
-    LOG(INFO) << fnEvents << " events, multiplicity:  " << nHits << FairLogger::endl;
+    LOG(INFO) << fnEvents << " events, multiplicity:  " << nHits;
   }
   fnEvents += 1;
 }
@@ -78,9 +78,8 @@ void R3BCaloRawAna::WriteHistos()
   thc->Write();
   the->Write();
   tht->Write();
-  LOG(INFO) << "R3BCaloRawAna --- Histograms written to Root File ..." << FairLogger::endl; 
+  LOG(INFO) << "R3BCaloRawAna --- Histograms written to Root File ...";
 }
 
 
 ClassImp(R3BCaloRawAna)
-

@@ -20,16 +20,16 @@ class TDatabasePDG;
 class FairPrimaryGenerator;
 class FairIon;
 
-class E105AsciiGenerator : public FairGenerator  
+class E105AsciiGenerator : public FairGenerator
 {
 
- public: 
+ public:
 
   /** Default constructor without arguments should not be used. **/
   E105AsciiGenerator();
 
 
-  /** Standard constructor. 
+  /** Standard constructor.
    ** @param fileName The input file name
    **/
   E105AsciiGenerator(const char* fileName);
@@ -38,7 +38,7 @@ class E105AsciiGenerator : public FairGenerator
   /** Destructor. **/
   virtual ~E105AsciiGenerator();
 
-	
+
   /** Reads on event from the input file and pushes the tracks onto
    ** the stack. Abstract method in base class.
    ** @param primGen  pointer to the E105PrimaryGenerator
@@ -57,16 +57,16 @@ class E105AsciiGenerator : public FairGenerator
     fDY=sy;
     fDZ=sz;
     fBoxVtxIsSet=kTRUE;
-  } 
+  }
 
  private:
 
-  ifstream*      fInputFile;          //! Input file stream
+  std::ifstream*      fInputFile;          //! Input file stream
   const Char_t*  fFileName;           //! Input file Name
   TDatabasePDG*  fPDG;                //!  PDG database
 
-  
-  /** Private method CloseInput. Just for convenience. Closes the 
+
+  /** Private method CloseInput. Just for convenience. Closes the
    ** input file properly. Called from destructor and from ReadEvent. **/
   void CloseInput();
 
@@ -79,10 +79,10 @@ class E105AsciiGenerator : public FairGenerator
 
   /** STL map from ion name to FairIon **/
   std::map<TString, FairIon*> fIonMap;       //!
-	
-  Double32_t fX, fY, fZ;           // Point vertex coordinates [cm]	
+
+  Double32_t fX, fY, fZ;           // Point vertex coordinates [cm]
   Bool_t     fPointVtxIsSet;       // True if point vertex is set
-  Double32_t fDX, fDY, fDZ;           // Point vertex coordinates [cm]	
+  Double32_t fDX, fDY, fDZ;           // Point vertex coordinates [cm]
   Bool_t     fBoxVtxIsSet;       // True if point vertex is set
 
 

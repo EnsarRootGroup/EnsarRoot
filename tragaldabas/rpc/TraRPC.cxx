@@ -44,10 +44,6 @@
 #include "TGeoCompositeShape.h"
 #include "TRandom3.h"
 
-using std::cout;
-using std::cerr;
-using std::endl;
-
 // -----   Default constructor   -------------------------------------------
 TraRPC::TraRPC() : EnsarDetector("TraRPC", kTRUE, kRPC)
 {
@@ -92,8 +88,8 @@ void TraRPC::Initialize()
 {
   FairDetector::Initialize();
 
-  LOG(INFO) << "TraRPC: initialisation" << FairLogger::endl;
-  LOG(DEBUG) << "-I- TraRPC: Vol (McId) def" << FairLogger::endl;
+  LOG(INFO) << "TraRPC: initialisation";
+  LOG(DEBUG) << "-I- TraRPC: Vol (McId) def";
 
   TGeoVolume *vol = gGeoManager->GetVolume("TragaWorld");
   vol->SetVisibility(kFALSE);
@@ -132,7 +128,7 @@ Bool_t TraRPC::ProcessHits(FairVolume* vol)
   volIdKIV = gMC->CurrentVolOffID(5,cpKIV);
 
   LOG(DEBUG) << "CurrentVolName: " << bufferName << ", volId: "
-    <<  volId1 << ", cp: " << cp1 << FairLogger::endl;
+    <<  volId1 << ", cp: " << cp1;
   //if (fGeometryVersion==0){
   // TRAGALDABAS 2014 description
   // the RPC plane is given by the variable cpKIV,
@@ -141,8 +137,7 @@ Bool_t TraRPC::ProcessHits(FairVolume* vol)
   //else LOG(ERROR) << "TraRPC: Geometry version not available in TraRPC::ProcessHits(). "
   //  << FairLogger::endl;
 
-  LOG(DEBUG) << "TraRPC: Processing Points in RPC_Plane Nb "
-    << cpKIV << FairLogger::endl;
+  LOG(DEBUG) << "TraRPC: Processing Points in RPC_Plane Nb " << cpKIV;
 
   // Hit: Fired cell with a charge value bigger than a given threshold.
   // fRPCId decodes the plane number (1 to 4, 3 bits PPP),
@@ -242,12 +237,12 @@ Bool_t TraRPC::ProcessHits(FairVolume* vol)
       Bool_t existHit = 0;
 
       // Time correction: TimeMC+TimeInsidePad+Smearing
-      Double_t const c=30.0; // speed of light,c, in cm/ns 
-      Double_t const percentage = 0.6;  
+      Double_t const c=30.0; // speed of light,c, in cm/ns
+      Double_t const percentage = 0.6;
       Double_t vel=percentage*c; // signal velocity
-      Double_t sigT=0.05; // sigma in time (ns) 
+      Double_t sigT=0.05; // sigma in time (ns)
       // random variable for smearing
-      TRandom3 random; 
+      TRandom3 random;
       random.SetSeed(0);
       fTime = fTime+TMath::Sqrt(fPosIn.X()*fPosIn.X()+fPosIn.Y()*fPosIn.Y())/vel+random.Gaus(0,sigT);
 
@@ -325,11 +320,9 @@ TClonesArray* TraRPC::GetCollection(Int_t iColl) const
 void TraRPC::Print(Option_t* option) const
 {
   Int_t nPoints = fRPCCollection->GetEntriesFast();
-  LOG(INFO) << "TraRPC: " << nPoints << " points registered in this event"
-	    << FairLogger::endl;
+  LOG(INFO) << "TraRPC: " << nPoints << " points registered in this event";
   Int_t nRPCHits = fRPCHitCollection->GetEntriesFast();
-  LOG(INFO) << "TraRPC: " << nRPCHits << " hits registered in this event."
-	    << FairLogger::endl;
+  LOG(INFO) << "TraRPC: " << nRPCHits << " hits registered in this event.";
 }
 // ----------------------------------------------------------------------------
 
@@ -346,7 +339,7 @@ void TraRPC::Reset()
 void TraRPC::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
 {
   Int_t nEntries = cl1->GetEntriesFast();
-  LOG(INFO) << "TraRPC: " << nEntries << " entries to add" << FairLogger::endl;
+  LOG(INFO) << "TraRPC: " << nEntries << " entries to add";
   TClonesArray& clref = *cl2;
   TraRPCPoint* oldpoint = NULL;
   for (Int_t i=0; i<nEntries; i++) {
@@ -356,8 +349,7 @@ void TraRPC::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
     new (clref[fPosIndex]) TraRPCPoint(*oldpoint);
     fPosIndex++;
   }
-  LOG(INFO) << "TraRPC: " << cl2->GetEntriesFast() << " merged entries"
-	    << FairLogger::endl;
+  LOG(INFO) << "TraRPC: " << cl2->GetEntriesFast() << " merged entries";
 }
 // ----------------------------------------------------------------------------
 
@@ -371,8 +363,7 @@ TraRPCPoint* TraRPC::AddHit(Int_t trackID, Int_t detID, Int_t volid,
   if (fVerboseLevel>1)
     LOG(INFO) << "TraRPC: Adding Point at (" << posIn.X() << ", " << posIn.Y()
 	      << ", " << posIn.Z() << ") cm,  detector " << detID << ", track "
-	      << trackID << ", energy loss " << eLoss*1e06 << " keV"
-	      << FairLogger::endl;
+	      << trackID << ", energy loss " << eLoss*1e06 << " keV";
   return new(clref[size]) TraRPCPoint(trackID, detID, volid,
 				       posIn, posOut, momIn, momOut, time, length, eLoss);
 }
@@ -390,11 +381,10 @@ TraRPCHit* TraRPC::AddRPCHit(Int_t detID,Double_t energy, Double_t time,
   Int_t size = clref.GetEntriesFast();
   if (fVerboseLevel>1) {
     LOG(INFO) << "-I- TraRPC: Adding Hit in detector with unique identifier " << detID
-	      << " entering with " << einc*1e06 << " keV, depositing " << energy*1e06
-	      << " keV" << FairLogger::endl;
+	      << " entering with " << einc*1e06 << " keV, depositing " << energy*1e06 << " keV";
     LOG(INFO) << " -I- trackid: " << trackid << " volume id: " << volid
 	      << " partrackid : " << partrackid << " type: " << pdgtype
-	      << " unique id: " << uniqueid << FairLogger::endl;
+	      << " unique id: " << uniqueid;
   }
   return new(clref[size]) TraRPCHit(detID, energy, time, posxin, posyin);
 }
@@ -404,11 +394,10 @@ void TraRPC::ConstructGeometry()
 {
   TString fileName = GetGeometryFileName();
   if(fileName.EndsWith(".root")) {
-    LOG(INFO) << "Constructing Tragaldabas geometry from ROOT file " << fileName.Data()
-	      << FairLogger::endl;
+    LOG(INFO) << "Constructing Tragaldabas geometry from ROOT file " << fileName.Data();
     ConstructRootGeometry();
   } else {
-    LOG(FATAL) << "Tragaldabas geometry file name is not specified" << FairLogger::endl;
+    LOG(FATAL) << "Tragaldabas geometry file name is not specified";
     exit(1);
   }
 }
@@ -433,7 +422,7 @@ Float_t XSup = Xcenter+5.8;
 Float_t XInf = Xcenter-5.8;
 Float_t YSup = Ycenter+5.55;
 Float_t YInf = Ycenter-5.55;
-	if( PosX<XSup && 
+	if( PosX<XSup &&
 	    PosX>XInf &&
             PosY<YSup &&
             PosY>YInf ){
@@ -444,7 +433,7 @@ Float_t YInf = Ycenter-5.55;
 		return kFALSE;
 	}
 
-} 
+}
 
 
 ClassImp(TraRPC)

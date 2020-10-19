@@ -11,6 +11,7 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
+
 class EnsarSiliconPoint;
 class FairVolume;
 class TClonesArray;
@@ -27,10 +28,10 @@ class EnsarSilicon: public EnsarDetector
      * \since 10.2014
      * \file EnsarSilicon.h
      * \brief Class for geometry definition/construction of Silicon Detector.
-     */	
+     */
 
     /**     \fn EnsarSilicon();
-     *      Default contructor. */    
+     *      Default contructor. */
     EnsarSilicon();
 
     /**     \fn EnsarSilicon(const char* Name, Bool_t Active);
@@ -42,14 +43,14 @@ class EnsarSilicon: public EnsarDetector
 
 
     /**     \fn ~EnsarSilicon();
-     *      Default descontructor.  */   
+     *      Default descontructor.  */
     virtual ~EnsarSilicon();
 
     /**     \fn ProcessHits( FairVolume* vol = 0);
      *     Hits processing in the volumes.
      *      This method is called for each step during simulation
      *       (see FairMCApplication::Stepping())  */
-    
+
     virtual Bool_t ProcessHits(FairVolume* vol = 0);
 
     /**     \fn Register()
@@ -68,7 +69,7 @@ class EnsarSilicon: public EnsarDetector
     /**     \fn ConstructGeometry()
      *      Create the detector geometry. */
     void ConstructGeometry();
-    
+
     /**     \fn  SetPositionRotation(Double_t x, Double_t y, Double_t z, Double_t rx, Double_t ry, Double_t rz);
      *      Positioning and rotating of the detector geometry. */
     int SetPositionRotation(Double_t x, Double_t y, Double_t z, Double_t rx, Double_t ry, Double_t rz);
@@ -78,24 +79,24 @@ class EnsarSilicon: public EnsarDetector
     virtual void   CopyClones( TClonesArray* cl1, TClonesArray* cl2, Int_t offset) {;}
 
     /**     \fn SetSpecialPhysicsCuts()
-     *      Set cuts for the physics. */    
+     *      Set cuts for the physics. */
     virtual void   SetSpecialPhysicsCuts() {;}
-    
+
     /**     \fn Initialize();
-     *      Initialization of the detector is done here. */    
+     *      Initialization of the detector is done here. */
     virtual void   Initialize();
-    
-    
+
+
     /**     \fn BeginEvent()
      *      This function is called at the start of an event.*/
     virtual void   BeginEvent() {;}
-    
+
     /**     \fn EndOfEvent()
-     *      This function is called at the end of an event.*/   
+     *      This function is called at the end of an event.*/
     virtual void   EndOfEvent();
-    
+
     /**     \fn BeginPrimary()
-     *      This function is called at the start of the primaries.*/ 
+     *      This function is called at the start of the primaries.*/
     virtual void   BeginPrimary() {;}
 
     /**     \fn FinishPrimary()
@@ -109,15 +110,15 @@ class EnsarSilicon: public EnsarDetector
     /**     \fn PostTrack()
      *      This function is called for accesing Track information.*/
     virtual void   PostTrack() {;}
-    
+
     /**     \fn PreTrack()
      *      This function is called for accesing Track information.*/
     virtual void   PreTrack() {;}
 
 
   private:
-    
-   
+
+
     Int_t          fTrackID;           /**<  Track index */
     Int_t          fVolumeID;          /**<  Volume id */
     TLorentzVector fPos;               /**<  Position at entrance */
@@ -139,14 +140,14 @@ class EnsarSilicon: public EnsarDetector
     Bool_t         kGeoSaved;          /**<  Flag for geometry activation */
 
 
-  
+
     TClonesArray*  fEnsarSiliconPointCollection; /**< Container for data points */
-    
+
     /**     \fn EnsarSiliconPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss);
      *      Adding of points into TClonesArray.
      *      This method is an example of how to add your own points
      *      of type EnsarSiliconPoint to the clones array */
-    
+
     EnsarSiliconPoint* AddHit(Int_t trackID, Int_t volumeID,
                         Int_t trackPID, Int_t parentTrackID, Int_t uniqueID,
 			TVector3 posIn, TVector3 pos_out,

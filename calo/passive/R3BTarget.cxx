@@ -43,10 +43,10 @@ void R3BTarget::ConstructGeometry()
 {
   TString fileName = GetGeometryFileName();
   if(fileName.EndsWith(".root")) {
-    LOG(INFO) << "Constructing Target geometry from ROOT file " << fileName.Data() << FairLogger::endl;
+    LOG(INFO) << "Constructing Target geometry from ROOT file " << fileName.Data();
     ConstructRootGeometry();
   } else {
-    LOG(FATAL) << "Target geometry file name is not set" << FairLogger::endl;
+    LOG(FATAL) << "Target geometry file name is not set";
     exit(1);
   }
 }
